@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Hello world!
@@ -20,18 +21,24 @@ public class GameServer implements Serializable
 
     Server[] playerServer = new Server[3];
     Player[] players = new Player[3];
+    ArrayList<Tile> tiles = new ArrayList<>();
 
     ServerSocket ss;
     int numPlayers;
 
+    Game game = new Game();
+
     public static void main( String[] args ) throws Exception {
-        GameServer gs = new GameServer();
+        GameServer gs = new GameServer(false);
 
         gs.acceptConnections();
+        gs.gameLoop();
     }
 
-    public GameServer() {
-        System.out.println("Starting game server");
+    public GameServer(boolean test) {
+        if (!test){
+            System.out.println("Starting game server");
+        }
         numPlayers = 0;
         turnsMade = 0;
         // initialize the players list with new players
@@ -39,10 +46,12 @@ public class GameServer implements Serializable
             players[i] = new Player(" ");
         }
 
-        try {
-            ss = new ServerSocket(9010);
-        } catch (IOException ex) {
-            System.out.println("Server Failed to open");
+        if(!test) {
+            try {
+                ss = new ServerSocket(9010);
+            } catch (IOException ex) {
+                System.out.println("Server Failed to open");
+            }
         }
     }
 
@@ -83,6 +92,35 @@ public class GameServer implements Serializable
         }
     }
 
+    public void gameLoop() {
+        try {
+            tiles = game.createPlayerHands(players, game.generateTiles());
+
+            while (true) {
+                turnsMade++;
+                System.out.println("*****************************************");
+                System.out.println("Round number " + turnsMade);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    playerServer[i].sendTurnNo(turnsMade);
+                    playerServer[i].sendPlayers(players);
+
+                    // receive action 1 or 2
+                    int action = playerServer[i].receiveAction();
+
+                    if (action == 1) {
+                        // draw new tile for player
+                        game.drawNewTile(players[i], tiles);
+                    }
+                    playerServer[i].sendPlayers(players);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public class Server implements Runnable {
         private Socket socket;
         private ObjectInputStream dIn;
@@ -114,6 +152,27 @@ public class GameServer implements Serializable
                     ex.printStackTrace();
                 }
             }
+        }
+
+        public void sendTurnNo(int r) {
+            try {
+                dOut.writeInt(r);
+                dOut.flush();
+            } catch (Exception e) {
+                System.out.println("Turn Number not received");
+                e.printStackTrace();
+            }
+        }
+
+        public int receiveAction() {
+            try {
+                int act = dIn.readInt();
+                return act;
+            } catch (Exception e) {
+                System.out.println("Action not received");
+                e.printStackTrace();
+            }
+            return -1;
         }
 
         public void sendPlayers(Player[] pl) {

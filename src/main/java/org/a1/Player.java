@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player implements Serializable {
@@ -16,6 +17,7 @@ public class Player implements Serializable {
     Client clientConnection;
 
     Player[] players = new Player[3];
+    public ArrayList<Tile> hand = new ArrayList<>();
 
     public Player(String n) {
         name = n;
@@ -29,6 +31,14 @@ public class Player implements Serializable {
         return name;
     }
 
+    public ArrayList<Tile> getHand() {
+        return this.hand;
+    }
+
+    public void setHand(ArrayList<Tile> ss) {
+        this.hand = ss;
+    }
+
     public void connectToClient() {
         clientConnection = new Client();
     }
@@ -37,6 +47,38 @@ public class Player implements Serializable {
         for (int i = 0; i < 3; i++) {
             players[i] = new Player(" ");
         }
+    }
+
+    public void startGame() {
+        while (true) {
+            int round = clientConnection.receiveRoundNo();
+            System.out.println("\n \n ********Round Number " + round + "********");
+            players = clientConnection.receivePlayers();
+
+            String[] userInputMelds = playRound();
+
+            if(userInputMelds == null){
+                clientConnection.sendAction(1);
+            }
+
+            System.out.println("Updated hand & Table: ");
+            players = clientConnection.receivePlayers();
+        }
+    }
+
+    public String[] playRound() {
+        Scanner myObj = new Scanner(System.in);
+
+        System.out.println("Select an action: ");
+        System.out.println(" (1) Pick a new Tile. ");
+
+        int act = myObj.nextInt();
+
+        if (act == 1) {
+            return null;
+        }
+
+        return null;
     }
 
     private class Client {
@@ -70,6 +112,44 @@ public class Player implements Serializable {
                 ex.printStackTrace();
             }
         }
+
+        public void sendAction(int action) {
+            try {
+                dOut.writeInt(action);
+                dOut.flush();
+            } catch (IOException ex) {
+                System.out.println("Action not sent");
+                ex.printStackTrace();
+            }
+        }
+
+        public Player[] receivePlayers() {
+            Player[] pl = new Player[3];
+            try {
+                for(int i=0; i<3; i++)
+                {
+                    pl[i] = (Player) dIn.readObject();
+                }
+            } catch (IOException e) {
+                System.out.println("Score sheet not received");
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                System.out.println("class not found");
+                e.printStackTrace();
+            }
+            return pl;
+        }
+
+        public int receiveRoundNo() {
+            try {
+                return dIn.readInt();
+
+            } catch (IOException e) {
+                System.out.println("Round numbert not received");
+                e.printStackTrace();
+            }
+            return 0;
+        }
     }
 
     public static void main(String args[]) {
@@ -79,6 +159,7 @@ public class Player implements Serializable {
         Player p = new Player(name);
         p.initializePlayers();
         p.connectToClient();
+        p.startGame();
         myObj.close();
     }
 }
