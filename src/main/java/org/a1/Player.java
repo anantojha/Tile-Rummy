@@ -14,10 +14,17 @@ public class Player implements Serializable {
 
     int playerId = 0;
 
+    Game game = new Game();
+
+    public ArrayList<Tile> hand = new ArrayList<>();
+    private ArrayList<ArrayList<Tile>> melds = new ArrayList<>();
+    private Boolean winner = false;
+
     Client clientConnection;
 
     Player[] players = new Player[3];
-    public ArrayList<Tile> hand = new ArrayList<>();
+
+    public boolean initialThirty = false;
 
     public Player(String n) {
         name = n;
@@ -56,9 +63,18 @@ public class Player implements Serializable {
             players = clientConnection.receivePlayers();
 
             String[] userInputMelds = playRound();
-
             if(userInputMelds == null){
                 clientConnection.sendAction(1);
+            } else {
+                ArrayList<ArrayList<Tile>> meldIn = game.convertMeldInputToTiles(userInputMelds);
+                if (game.initialMeldsAtLeastThirty(this, meldIn)) {
+                    this.initialThirty = true;
+                    System.out.println("Meld is over 30 points");
+                } else {
+                    System.out.println("Initial Melds did not equal at least 30");
+                    System.out.println("New Tile is added to your hand");
+                    clientConnection.sendAction(1);
+                }
             }
 
             System.out.println("Updated hand & Table: ");
@@ -71,14 +87,31 @@ public class Player implements Serializable {
 
         System.out.println("Select an action: ");
         System.out.println(" (1) Pick a new Tile. ");
+        System.out.println(" (2) Play a Meld. ");
 
         int act = myObj.nextInt();
 
         if (act == 1) {
             return null;
+        } else {
+            System.out.println("Select a RUNs / SETs from your hand. (Format: {01,02,03}{R1,B2,G3,O4} )");
+            String[] userInputMelds = processInputMelds(myObj.next());
+            return userInputMelds;
+        }
+    }
+
+    public String[] processInputMelds(String input)
+    {
+        String[] inMeld = input.replaceAll("\\s", "").split("}");
+        String[] formattedMeld = new String[inMeld.length];
+        String res;
+        for(int i = 0; i < inMeld.length; i++)
+        {
+            res = inMeld[i].replaceAll("\\{", "").replaceAll("}","");
+            formattedMeld[i] = res;
         }
 
-        return null;
+        return formattedMeld;
     }
 
     private class Client {

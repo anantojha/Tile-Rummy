@@ -61,4 +61,58 @@ public class Game implements Serializable {
         tile.setLastUsed(true);
         p.getPlayer().getHand().add(tile);
     }
+
+    public void drawNewTiles(Player p, int n, ArrayList<Tile> tiles){
+        for (int i = 0; i<n; i++)
+        {
+            Tile tile = tiles.get(0);
+            tiles.remove(0);
+            tile.setLastUsed(true);
+            p.getPlayer().getHand().add(tile);
+        }
+    }
+
+    public ArrayList<ArrayList<Tile>>  convertMeldInputToTiles(String[] in)
+    {
+        String[] temp;
+        ArrayList<ArrayList<Tile>> melds = new ArrayList<>();
+        for (String s : in)
+        {
+            temp = s.split(",");
+            ArrayList<Tile> meld = new ArrayList<>();
+            for (String v : temp)
+            {
+                meld.add(new Tile(Integer.parseInt(v.substring(1)), v.substring(0, 1)));
+            }
+            melds.add(meld);
+        }
+
+        return melds;
+    }
+
+    public boolean initialMeldsAtLeastThirty(Player player, ArrayList<ArrayList<Tile>> melds)
+    {
+        if (player.initialThirty){
+            return true;
+        }
+
+        int counter = 0;
+
+        for (ArrayList<Tile> meld: melds)
+        {
+            for (Tile tile: meld)
+            {
+                counter += tile.getNumber();
+            }
+        }
+
+        if(counter >= 30)
+        {
+            return true;
+        }
+        else
+        {
+            return  false;
+        }
+    }
 }
