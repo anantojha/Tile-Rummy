@@ -46,6 +46,38 @@ public class AppTest extends TestCase {
     }
 
     /*
+     *  Test Case: Player draws a new tile from board
+     */
+    public void testDrawingANewTileCase2() {
+        GameServer gs = new GameServer(true);
+        Player p1 = new Player("P1");
+        gs.players[0] = p1;
+        gs.tiles = game.generateTiles(); // generate all tiles
+
+        // create player 1s hand - {B2,B2,O2,R3,G3,G3,R5,G6,O7,R9,R10,B11,G12,G13}
+        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "O", gs.tiles);
+        game.drawNewTile(p1, 3, "R", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 5, "R", gs.tiles);
+        game.drawNewTile(p1, 6, "G", gs.tiles);
+        game.drawNewTile(p1, 7, "O", gs.tiles);
+        game.drawNewTile(p1, 9, "R", gs.tiles);
+        game.drawNewTile(p1, 10, "R", gs.tiles);
+        game.drawNewTile(p1, 11, "B", gs.tiles);
+        game.drawNewTile(p1, 12, "G", gs.tiles);
+        game.drawNewTile(p1, 13, "G", gs.tiles);
+
+        assertTrue(p1.getHand().size() == 14);   // player 1 hand starts with 14 tiles
+        assertTrue(gs.tiles.size() == 90);       // 90 unused tiles on table
+        game.drawNewTile(p1, gs.tiles);                   // draw a new tile from the table
+        assertTrue(p1.getHand().size() == 15);   // player 1 hand is updated (15 tiles in hand)
+        assertTrue(gs.tiles.size() == 89);       // unused tiles updated
+    }
+
+    /*
      *  Test Case: Initial meld(s) equal at least 30 points
      */
     public void testInitial30PointsCase1() {
