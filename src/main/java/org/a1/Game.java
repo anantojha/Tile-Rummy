@@ -115,4 +115,37 @@ public class Game implements Serializable {
             return  false;
         }
     }
+
+    public Boolean playMelds(Player player, ArrayList<ArrayList<Tile>> meld, ArrayList<ArrayList<Tile>> inMeld)
+    {
+        if (!initialMeldsAtLeastThirty(player, inMeld))
+        {
+            return false;
+        }
+
+        ArrayList<Tile> newHandOffset;
+        ArrayList<ArrayList<Tile>> newMelds = new ArrayList<>();
+
+        for (ArrayList<Tile> m: inMeld)
+        {
+            newHandOffset = new ArrayList<>();
+            for (Tile t: m)
+            {
+                Tile temp = player.getTileFromhand(t.getNumber(), t.getColour(), true);
+                temp.setLastUsed(true);
+                newHandOffset.add(temp);
+            }
+
+            newMelds.add(newHandOffset);
+        }
+
+        for (ArrayList<Tile> group: newMelds)
+        {
+            meld.add(group);
+        }
+
+        player.initialThirty = true;
+
+        return true;
+    }
 }

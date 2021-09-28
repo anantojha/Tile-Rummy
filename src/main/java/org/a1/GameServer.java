@@ -22,11 +22,12 @@ public class GameServer implements Serializable
     Server[] playerServer = new Server[3];
     Player[] players = new Player[3];
     ArrayList<Tile> tiles = new ArrayList<>();
+    ArrayList<ArrayList<Tile>> melds = new ArrayList<>();
 
     ServerSocket ss;
-    int numPlayers;
 
     Game game = new Game();
+    int numPlayers;
 
     public static void main( String[] args ) throws Exception {
         GameServer gs = new GameServer(false);
@@ -105,15 +106,21 @@ public class GameServer implements Serializable
                 {
                     playerServer[i].sendTurnNo(turnsMade);
                     playerServer[i].sendPlayers(players);
+                    playerServer[i].sendMelds(melds);
 
                     // receive action 1 or 2
                     int action = playerServer[i].receiveAction();
-
                     if (action == 1) {
                         // draw new tile for player
                         game.drawNewTile(players[i], tiles);
+                    } else if (action == 2) {
+                        // add meld (run or set) to table
+                        //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
+                        ArrayList<ArrayList<Tile>> inMelds = playerServer[i].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
+                        game.playMelds(players[i], melds, inMelds);
                     }
                     playerServer[i].sendPlayers(players);
+                    playerServer[i].sendMelds(melds);
                 }
             }
         } catch (Exception e) {
@@ -154,6 +161,31 @@ public class GameServer implements Serializable
             }
         }
 
+        public void sendPlayers(Player[] pl) {
+            try {
+                for (Player p : pl) {
+                    dOut.writeObject(p);
+                    dOut.flush();
+                    dOut.reset();
+                }
+
+            } catch (IOException ex) {
+                System.out.println("Players not sent");
+                ex.printStackTrace();
+            }
+        }
+
+        public void sendMelds(ArrayList<ArrayList<Tile>> melds) {
+            try {
+                dOut.writeObject(melds);
+                dOut.flush();
+                dOut.reset();
+            } catch (IOException ex) {
+                System.out.println("Melds not sent");
+                ex.printStackTrace();
+            }
+        }
+
         public void sendTurnNo(int r) {
             try {
                 dOut.writeInt(r);
@@ -175,18 +207,14 @@ public class GameServer implements Serializable
             return -1;
         }
 
-        public void sendPlayers(Player[] pl) {
+        public ArrayList<ArrayList<Tile>> receiveMeld() {
             try {
-                for (Player p : pl) {
-                    dOut.writeObject(p);
-                    dOut.flush();
-                    dOut.reset();
-                }
-
-            } catch (IOException ex) {
-                System.out.println("Players not sent");
-                ex.printStackTrace();
+                return (ArrayList<ArrayList<Tile>>) dIn.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Melds not received");
+                e.printStackTrace();
             }
+            return null;
         }
     }
 }

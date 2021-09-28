@@ -23,6 +23,7 @@ public class Player implements Serializable {
     Client clientConnection;
 
     Player[] players = new Player[3];
+    private ArrayList<ArrayList<Tile>> meldsToPlay = new ArrayList<>();
 
     public boolean initialThirty = false;
 
@@ -34,17 +35,7 @@ public class Player implements Serializable {
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<Tile> getHand() {
-        return this.hand;
-    }
-
-    public void setHand(ArrayList<Tile> ss) {
-        this.hand = ss;
-    }
+    public String getName() { return  name; }
 
     public void connectToClient() {
         clientConnection = new Client();
@@ -56,11 +47,40 @@ public class Player implements Serializable {
         }
     }
 
+    public ArrayList<Tile> getHand() {
+        return this.hand;
+    }
+
+    public void setHand(ArrayList<Tile> ss) {
+        this.hand = ss;
+    }
+
+    public Tile getTileFromhand(int n, String c, boolean remove)
+    {
+        for (int i = 0; i < hand.size(); i++)
+        {
+            if(hand.get(i).getNumber() == n)
+            {
+                if(hand.get(i).getColour().equals(c))
+                {
+                    if(remove){
+                        Tile temp = new Tile(n, c);
+                        hand.remove(i);
+                        return temp;
+                    }
+                    return new Tile(n, c);
+                }
+            }
+        }
+        return null;
+    }
+
     public void startGame() {
         while (true) {
             int round = clientConnection.receiveRoundNo();
             System.out.println("\n \n ********Round Number " + round + "********");
             players = clientConnection.receivePlayers();
+            melds = clientConnection.receiveMelds();
 
             String[] userInputMelds = playRound();
             if(userInputMelds == null){
@@ -68,8 +88,9 @@ public class Player implements Serializable {
             } else {
                 ArrayList<ArrayList<Tile>> meldIn = game.convertMeldInputToTiles(userInputMelds);
                 if (game.initialMeldsAtLeastThirty(this, meldIn)) {
+                    clientConnection.sendAction(2);
+                    clientConnection.sendMeld(meldIn);
                     this.initialThirty = true;
-                    System.out.println("Meld is over 30 points");
                 } else {
                     System.out.println("Initial Melds did not equal at least 30");
                     System.out.println("New Tile is added to your hand");
@@ -77,8 +98,8 @@ public class Player implements Serializable {
                 }
             }
 
-            System.out.println("Updated hand & Table: ");
             players = clientConnection.receivePlayers();
+            melds = clientConnection.receiveMelds();
         }
     }
 
@@ -146,6 +167,18 @@ public class Player implements Serializable {
             }
         }
 
+        public void sendMeld(ArrayList<ArrayList<Tile>> meld)
+        {
+            try {
+                dOut.writeObject(meld);
+                dOut.flush();
+                //dOut.reset();
+            } catch (IOException ex) {
+                System.out.println("Melds not sent");
+                ex.printStackTrace();
+            }
+        }
+
         public void sendAction(int action) {
             try {
                 dOut.writeInt(action);
@@ -182,6 +215,16 @@ public class Player implements Serializable {
                 e.printStackTrace();
             }
             return 0;
+        }
+
+        public ArrayList<ArrayList<Tile>> receiveMelds() {
+            try {
+                return (ArrayList<ArrayList<Tile>>) dIn.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Melds not received");
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 
