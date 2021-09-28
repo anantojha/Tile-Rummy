@@ -44,4 +44,23 @@ public class AppTest extends TestCase {
         assertTrue(p1.getHand().size() == 15);   // player 1 hand is updated (15 tiles in hand)
         assertTrue(gs.tiles.size() == 89);       // unused tiles updated
     }
+
+    /*
+     *  Test Case: Initial meld(s) equal at least 30 points
+     */
+    public void testInitial30PointsCase1() {
+        GameServer gs = new GameServer(true);
+        Player p1 = new Player("P1");
+        gs.players[0] = p1;
+        gs.tiles = game.generateTiles(); // generate all tiles
+
+        // create player 1s hand - {R11,R12,R13} and 11 random tiles
+        game.drawNewTile(p1, 11, "R", gs.tiles);
+        game.drawNewTile(p1, 12, "R", gs.tiles);
+        game.drawNewTile(p1, 13, "R", gs.tiles);
+        game.drawNewTiles(p1, 11, gs.tiles);
+
+        assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R11,R12,R13}")))); // Check for initial meld being at least 30 points
+    }
 }
