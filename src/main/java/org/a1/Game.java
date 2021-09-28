@@ -148,4 +148,150 @@ public class Game implements Serializable {
 
         return true;
     }
+
+    public void printPlayerHands(Player[] players)
+    {
+        for (Player p : players)
+        {
+            printHand(p);
+        }
+    }
+
+    public void printHand(Player p)
+    {
+        printSortedHand(p.getHand(), p.getName());
+    }
+
+    public ArrayList<ArrayList<Tile>> sortTiles(ArrayList<Tile> tiles)
+    {
+        ArrayList<Tile> sortedHandRed = new ArrayList<>();
+        ArrayList<Tile> sortedHandBlue = new ArrayList<>();
+        ArrayList<Tile> sortedHandGreen = new ArrayList<>();
+        ArrayList<Tile> sortedHandOrange = new ArrayList<>();
+
+        for (Tile t : tiles)
+        {
+            if(t.getColour().equals("R"))
+            {
+                sortedHandRed.add(t);
+            }
+            else if(t.getColour().equals("B"))
+            {
+                sortedHandBlue.add(t);
+            }
+            else if(t.getColour().equals("G"))
+            {
+                sortedHandGreen.add(t);
+            }
+            else
+            {
+                sortedHandOrange.add(t);
+            }
+        }
+
+        ArrayList<ArrayList<Tile>> result = new ArrayList<>();
+
+        sortedHandRed.sort(Comparator.comparingInt(Tile::getNumber));
+        result.add(sortedHandRed);
+        sortedHandBlue.sort(Comparator.comparingInt(Tile::getNumber));
+        result.add(sortedHandBlue);
+        sortedHandGreen.sort(Comparator.comparingInt(Tile::getNumber));
+        result.add(sortedHandGreen);
+        sortedHandOrange.sort(Comparator.comparingInt(Tile::getNumber));
+        result.add(sortedHandOrange);
+        return  result;
+    }
+
+    public void printSortedHand(ArrayList<Tile> tiles, String playerName) { // implement sort order RBGO 1-13
+
+        ArrayList<ArrayList<Tile>> sortedTiles = sortTiles(tiles);
+
+        System.out.println("|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|  Hand of player : " + playerName);
+
+        for(ArrayList<Tile> sortedSingleColourTiles: sortedTiles)
+        {
+            printTiles(sortedSingleColourTiles, false);
+        }
+
+        System.out.println();
+        System.out.println(
+                "|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+    }
+
+    public void printMelds(ArrayList<ArrayList<Tile>> melds)
+    {
+        System.out.println(
+                "|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|  Melds: ");
+        for (ArrayList<Tile> meld: melds)
+        {
+            System.out.print("{");
+            ArrayList<ArrayList<Tile>> sortedTiles = sortTiles(meld);
+            for (ArrayList<Tile> tiles : sortedTiles)
+            {
+                printTiles(tiles, false);
+            }
+            System.out.print("}, ");
+        }
+        System.out.println();
+        System.out.println(
+                "|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+    }
+
+    public void printTiles(ArrayList<Tile> tiles, boolean line)
+    {
+        for (Tile t : tiles) {
+            if(t.getLastUsed()){
+                System.out.print("|  " + t.getColour() + t.getNumber() + "*  |  ");
+            } else {
+                System.out.print("|  " + t.getColour() + t.getNumber() + "  |  ");
+            }
+        }
+        if (line)
+        {
+            System.out.println();
+        }
+    }
+
+    public void printRemainingTiles(ArrayList<Tile> tiles)
+    {
+        ArrayList<ArrayList<Tile>> sortedTiles = sortTiles(tiles);
+
+        System.out.println(
+                "|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+        System.out.println("|  Remaining Tiles on table (faced down):  " + tiles.size() + " Tiles ");
+        for(ArrayList<Tile> t: sortedTiles)
+        {
+            printTiles(t, true);
+        }
+        System.out.println(
+                "|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+    }
+
+    public void resetPreviouslyMovedTile(Player[] players, ArrayList<Tile> tiles, ArrayList<ArrayList<Tile>> melds)
+    {
+        for (Player p : players)
+        {
+            for (Tile t: p.getHand())
+            {
+                t.setLastUsed(false);
+            }
+        }
+
+        for (Tile t: tiles)
+        {
+            t.setLastUsed(false);
+        }
+
+        for (ArrayList<Tile> m: melds)
+        {
+            for (Tile t: m)
+            {
+                t.setLastUsed(false);
+            }
+        }
+    }
 }

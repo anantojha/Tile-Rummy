@@ -81,6 +81,8 @@ public class Player implements Serializable {
             System.out.println("\n \n ********Round Number " + round + "********");
             players = clientConnection.receivePlayers();
             melds = clientConnection.receiveMelds();
+            game.printHand(players[playerId-1]);
+            game.printMelds(melds);
 
             String[] userInputMelds = playRound();
             if(userInputMelds == null){
@@ -98,8 +100,11 @@ public class Player implements Serializable {
                 }
             }
 
+            System.out.println("Updated hand & Table: ");
             players = clientConnection.receivePlayers();
             melds = clientConnection.receiveMelds();
+            game.printHand(players[playerId-1]);
+            game.printMelds(melds);
         }
     }
 

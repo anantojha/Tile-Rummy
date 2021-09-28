@@ -96,9 +96,13 @@ public class GameServer implements Serializable
     public void gameLoop() {
         try {
             tiles = game.createPlayerHands(players, game.generateTiles());
+            System.out.println("Initials Hands:");
+            game.printPlayerHands(players);
+            game.printRemainingTiles(tiles);
 
             while (true) {
                 turnsMade++;
+                game.resetPreviouslyMovedTile(players, tiles, melds);
                 System.out.println("*****************************************");
                 System.out.println("Round number " + turnsMade);
 
@@ -121,6 +125,9 @@ public class GameServer implements Serializable
                     }
                     playerServer[i].sendPlayers(players);
                     playerServer[i].sendMelds(melds);
+                    game.printHand(players[i]);
+                    game.printMelds(melds);
+                    game.printRemainingTiles(tiles);
                 }
             }
         } catch (Exception e) {
