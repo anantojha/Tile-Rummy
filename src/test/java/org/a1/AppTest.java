@@ -801,7 +801,7 @@ public class AppTest extends TestCase {
     /*
      *  Test Case: test player winning a game
      */
-    public void testSimpleTableReuse() {
+    public void testSimpleTableReuseCase1() {
         //setup
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
