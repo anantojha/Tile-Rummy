@@ -988,11 +988,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 3);        // melds are updated (3 melds now on table)
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-
-
         game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' from tiles previously used.
 
-        // Case 1
+        // Case 2
         // Player 1 draws new tile for their 2nd turn
         game.drawNewTile(p1, gs.tiles);                   // draw a new tile from the table (random)
         assertTrue(p1.getHand().size() == 11);   // player 1 hand is updated
@@ -1077,9 +1075,86 @@ public class AppTest extends TestCase {
         game.printMelds(gs.melds);
         game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' from tiles previously used.
 
-        // Case 1
+        // Case 3
         // Player 1 plays: {O7,R7,G7} for their 2nd turn (O7 is reused from existing meld on table)
         assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{*O7,R7,G7}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(p1.getHand().size() == 8);   // player 1 hand is updated
+        assertTrue(gs.melds.size() == 4);        // melds are updated (1 new meld)
+
+        System.out.println("After Reuse:");
+        game.printMelds(gs.melds);
+    }
+
+    /*
+     *  Test Case 4: test player reusing tiles on table
+     */
+    public void testSimpleTableReuseCase4() {
+        //setup
+        System.out.println();
+        System.out.println("Test: Simple Reuse From Table - Case 3");
+
+        GameServer gs = new GameServer(true);
+        Player p1 = new Player("P1");
+        Player p2 = new Player("P2");
+        Player p3 = new Player("P3");
+        gs.players[0] = p1;
+        gs.players[1] = p2;
+        gs.players[2] = p3;
+        gs.tiles = game.generateTiles(); // generate all tiles
+
+        /* Player 1 plays a new meld {R11,O11,G11,B11} */
+        game.drawNewTile(p1, 11, "R", gs.tiles);
+        game.drawNewTile(p1, 11, "O", gs.tiles);
+        game.drawNewTile(p1, 11, "G", gs.tiles);
+        game.drawNewTile(p1, 11, "B", gs.tiles);
+        game.drawNewTile(p1, 8, "O", gs.tiles);
+        game.drawNewTile(p1, 9, "O", gs.tiles);
+
+        /* Player 2 plays a new meld {R12,G12,B12} */
+        game.drawNewTile(p2, 12, "R", gs.tiles);
+        game.drawNewTile(p2, 12, "G", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+
+        /* Player 3 plays a new meld {O7,O8,O9,O10,O11,O12,O13} */
+        game.drawNewTile(p3, 7, "O", gs.tiles);
+        game.drawNewTile(p3, 8, "O", gs.tiles);
+        game.drawNewTile(p3, 9, "O", gs.tiles);
+        game.drawNewTile(p3, 10, "O", gs.tiles);
+        game.drawNewTile(p3, 11, "O", gs.tiles);
+        game.drawNewTile(p3, 12, "O", gs.tiles);
+        game.drawNewTile(p3, 13, "O", gs.tiles);
+
+        game.drawNewTiles(p1, 8, gs.tiles);           // create player 1s hand - {R12,G12,O12} and 11 random tiles
+        game.drawNewTiles(p2, 11, gs.tiles);           // create player 2s hand - {R11,R12,R13} and 11 random tiles
+        game.drawNewTiles(p3, 7, gs.tiles);            // create player 3s hand - {R13 G13 B13}{B2 R2 O2} and 8 random tiles
+
+        assertTrue(p1.getHand().size() == 14);   // player 2s hand has 14 tiles
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{R11,O11,G11,B11}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(p1.getHand().size() == 10);   // player 1 hand is updated
+        assertTrue(gs.melds.size() == 1);        // melds are updated (melds still empty)
+        assertTrue(gs.tiles.size() == 62);       // unused tiles updated
+
+        assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{R12,G12,B12}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
+        assertTrue(gs.melds.size() == 2);        // melds are updated (1 new meld)
+        assertTrue(gs.tiles.size() == 62);       // unused tiles updated
+
+        game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' from tiles previously used.
+
+        assertTrue(p3.getHand().size() == 14);   // player 3s hand has 14 tiles
+        assertTrue(game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p3.processInputMelds("{O7,O8,O9,O10,O11,O12,O13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(p3.getHand().size() == 7);    // player 3 hand is updated
+        assertTrue(gs.melds.size() == 3);        // melds are updated (3 melds now on table)
+        assertTrue(gs.tiles.size() == 62);       // unused tiles updated
+
+        System.out.println("Before Reuse:");
+        game.printMelds(gs.melds);
+        game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' from tiles previously used.
+
+        // Case 4
+        // Player 1 plays: {O7,R7,G7} for their 2nd turn (O7 is reused from existing meld on table)
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{O8,O9,*O10}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p1.getHand().size() == 8);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 4);        // melds are updated (1 new meld)
 

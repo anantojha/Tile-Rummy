@@ -281,11 +281,11 @@ public class Game implements Serializable {
     {
         for (Tile t : tiles) {
             if(t.getLastUsed()){
-                System.out.print("|  " + t.getColour() + t.getNumber() + "*  |  ");
+                System.out.print("| " + t.getColour() + t.getNumber() + "* | ");
             } else if (t.reuse == true) {
-                System.out.print("|  " + t.getColour() + t.getNumber() + "!  |  ");
+                System.out.print("| " + t.getColour() + t.getNumber() + "! | ");
             } else {
-                System.out.print("|  " + t.getColour() + t.getNumber() + "  |  ");
+                System.out.print("| " + t.getColour() + t.getNumber() + " | ");
             }
         }
         if (line)
