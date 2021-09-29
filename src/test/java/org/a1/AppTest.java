@@ -790,8 +790,8 @@ public class AppTest extends TestCase {
 
         //check for winner
         assertTrue(game.checkForWinner(gs.players).getName().equals("P2"));
-        assertTrue(gs.players[0].score == -78);
-        assertTrue(gs.players[1].score == 0);
-        assertTrue(gs.players[2].score == -38);
+        assertTrue(gs.players[0].getScore() == -91);
+        assertTrue(gs.players[1].getScore() == 0);
+        assertTrue(gs.players[2].getScore() == -32);
     }
 }
