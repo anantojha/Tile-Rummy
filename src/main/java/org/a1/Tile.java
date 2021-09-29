@@ -8,6 +8,7 @@ public class Tile implements Serializable {
     private String colour;
     private boolean lastUsed = false;
     private int points = 0;
+    public boolean reuse = false;
 
     public Tile(int number, String colour)
     {
@@ -38,6 +39,8 @@ public class Tile implements Serializable {
     {
         lastUsed = b;
     }
+
+    public void setReuse(boolean b) { reuse = b; }
 
     public int getPoints() { return points; }
 }

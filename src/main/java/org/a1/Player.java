@@ -152,6 +152,7 @@ public class Player implements Serializable {
             return null;
         } else {
             System.out.println("Select a RUNs / SETs from your hand. (Format: {01,02,03}{R1,B2,G3,O4} )");
+            System.out.println("To reuse tiles from table, mark tiles on table with *. (Format: {01,02,*03} )");
             String[] userInputMelds = processInputMelds(myObj.next());
             return userInputMelds;
         }

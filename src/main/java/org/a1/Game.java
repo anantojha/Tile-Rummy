@@ -82,12 +82,42 @@ public class Game implements Serializable {
             ArrayList<Tile> meld = new ArrayList<>();
             for (String v : temp)
             {
-                meld.add(new Tile(Integer.parseInt(v.substring(1)), v.substring(0, 1)));
+                if(v.contains("*"))
+                {
+                    Tile t = new Tile(Integer.parseInt(v.substring(2)), v.substring(1, 2));
+                    t.reuse = true;
+                    meld.add(t);
+                } else {
+                    meld.add(new Tile(Integer.parseInt(v.substring(1)), v.substring(0, 1)));
+                }
             }
             melds.add(meld);
         }
 
         return melds;
+    }
+
+    public Tile getTileFromTable(int n, String c, boolean remove, ArrayList<ArrayList<Tile>> melds)
+    {
+        for (int i = 0; i < melds.size(); i++)
+        {
+            for (int j = 0; j<melds.get(i).size(); j++)
+            {
+                if(melds.get(i).get(j).getNumber() == n)
+                {
+                    if(melds.get(i).get(j).getColour().equals(c))
+                    {
+                        if(remove){
+                            Tile temp = new Tile(n, c);
+                            melds.get(i).remove(j);
+                            return temp;
+                        }
+                        return new Tile(n, c);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public boolean initialMeldsAtLeastThirty(Player player, ArrayList<ArrayList<Tile>> melds)
@@ -129,11 +159,18 @@ public class Game implements Serializable {
         for (ArrayList<Tile> m: inMeld)
         {
             newHandOffset = new ArrayList<>();
-            for (Tile t: m)
-            {
-                Tile temp = player.getTileFromhand(t.getNumber(), t.getColour(), true);
-                temp.setLastUsed(true);
-                newHandOffset.add(temp);
+
+
+            for (Tile t: m) {
+                if (t.reuse != true) {
+                    Tile temp = player.getTileFromhand(t.getNumber(), t.getColour(), true);
+                    temp.setLastUsed(true);
+                    newHandOffset.add(temp);
+                } else {
+                    Tile temp = getTileFromTable(t.getNumber(), t.getColour(), true, meld);
+                    temp.setReuse(true);
+                    newHandOffset.add(temp);
+                }
             }
 
             newMelds.add(newHandOffset);
@@ -245,6 +282,8 @@ public class Game implements Serializable {
         for (Tile t : tiles) {
             if(t.getLastUsed()){
                 System.out.print("|  " + t.getColour() + t.getNumber() + "*  |  ");
+            } else if (t.reuse == true) {
+                System.out.print("|  " + t.getColour() + t.getNumber() + "!  |  ");
             } else {
                 System.out.print("|  " + t.getColour() + t.getNumber() + "  |  ");
             }
@@ -278,12 +317,14 @@ public class Game implements Serializable {
             for (Tile t: p.getHand())
             {
                 t.setLastUsed(false);
+                t.reuse = false;
             }
         }
 
         for (Tile t: tiles)
         {
             t.setLastUsed(false);
+            t.reuse = false;
         }
 
         for (ArrayList<Tile> m: melds)
@@ -291,6 +332,7 @@ public class Game implements Serializable {
             for (Tile t: m)
             {
                 t.setLastUsed(false);
+                t.reuse = false;
             }
         }
     }
