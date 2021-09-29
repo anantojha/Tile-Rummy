@@ -778,8 +778,8 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {B2,B2,O2,R3,G3,G3,R5,G6,O7,R9,R10,B11,G12,G13}
-        game.drawNewTile(p1, 3, "B", gs.tiles);
+        // create player 1s hand - {B1,B2,O2,R3,G3,G3,R5,G6,O7,R9,R10,G11,G12,G13}
+        game.drawNewTile(p1, 1, "B", gs.tiles);
         game.drawNewTile(p1, 2, "B", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
         game.drawNewTile(p1, 3, "R", gs.tiles);
@@ -790,7 +790,7 @@ public class AppTest extends TestCase {
         game.drawNewTile(p1, 7, "O", gs.tiles);
         game.drawNewTile(p1, 9, "R", gs.tiles);
         game.drawNewTile(p1, 10, "R", gs.tiles);
-        game.drawNewTile(p1, 11, "B", gs.tiles);
+        game.drawNewTile(p1, 11, "G", gs.tiles);
         game.drawNewTile(p1, 12, "G", gs.tiles);
         game.drawNewTile(p1, 13, "G", gs.tiles);
 
@@ -809,10 +809,10 @@ public class AppTest extends TestCase {
         game.drawNewTile(p2, 7, "O", gs.tiles);
         game.drawNewTile(p2, 8, "O", gs.tiles);
 
-        // create player 3s hand - 4H 6D 6D 7S 7H 8C {10H JH QH KH} {10S JS QS KS}
+        // create player 3s hand - 4H 6D 6S 7S 7H 8C {10H JH QH KH} {10S JS QS KS}
         game.drawNewTile(p3, 4, "R", gs.tiles);
         game.drawNewTile(p3, 6, "O", gs.tiles);
-        game.drawNewTile(p3, 6, "O", gs.tiles);
+        game.drawNewTile(p3, 6, "G", gs.tiles);
         game.drawNewTile(p3, 7, "G", gs.tiles);
         game.drawNewTile(p3, 7, "R", gs.tiles);
         game.drawNewTile(p3, 8, "B", gs.tiles);
@@ -831,16 +831,16 @@ public class AppTest extends TestCase {
         game.drawNewTile(p2, 5, "B", gs.tiles);
         //P3 plays  {10H JH QH KH} {10S JS QS KS}
         game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p3.processInputMelds("{R10,R11,R12,R13}{G10,G11,G12,G13}")));
-        //P1 plays {2C 2D 2H}
-        game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B3,O2,R2}")));
+        //P1 plays {2C 2D 2H}{JS QS KS}
+        game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,O2,R2}{G11,G12,G13}")));
         //P2 plays and wins: {2H 2S 2C 2D} {3C 4C 5C 6C 7C} {4D 5D 6D 7D 8D}
         game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}")));
 
         //check for winner
         assertTrue(game.checkForWinner(gs.players).getName().equals("P2"));
-        assertTrue(gs.players[0].getScore() == -85); // P1 score: -85
-        assertTrue(gs.players[1].getScore() == 0);
-        assertTrue(gs.players[2].getScore() == -32);
+        assertTrue(gs.players[0].getScore() == -47); // P1 finishes with -47 Points - 3rd place
+        assertTrue(gs.players[1].getScore() == 0);   // P2 finishes with 0 Points - WINNER
+        assertTrue(gs.players[2].getScore() == -38); // P3 finishes with -38 Points - 2nd place
     }
 
     /*
