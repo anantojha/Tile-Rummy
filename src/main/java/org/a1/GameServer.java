@@ -34,6 +34,7 @@ public class GameServer implements Serializable
 
         gs.acceptConnections();
         gs.gameLoop();
+        System.out.println("Game Over");
     }
 
     public GameServer(boolean test) {
@@ -95,19 +96,31 @@ public class GameServer implements Serializable
 
     public void gameLoop() {
         try {
+            boolean stop = false;
             tiles = game.createPlayerHands(players, game.generateTiles());
             System.out.println("Initials Hands:");
             game.printPlayerHands(players);
             game.printRemainingTiles(tiles);
 
-            while (true) {
+            while (stop != true) {
                 turnsMade++;
                 game.resetPreviouslyMovedTile(players, tiles, melds);
+                if(game.checkForWinner(players) != null)
+                {
+                    System.out.println("Winner: Player " + game.checkForWinner(players).getName());
+                    break;
+                }
                 System.out.println("*****************************************");
                 System.out.println("Round number " + turnsMade);
 
                 for (int i = 0; i < 3; i++)
                 {
+                    if(game.checkForWinner(players) != null)
+                    {
+                        System.out.println("Winner: Player " + game.checkForWinner(players).getName());
+                        stop = true;
+                        break;
+                    }
                     playerServer[i].sendTurnNo(turnsMade);
                     playerServer[i].sendPlayers(players);
                     playerServer[i].sendMelds(melds);

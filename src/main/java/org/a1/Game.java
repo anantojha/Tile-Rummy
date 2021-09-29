@@ -294,4 +294,16 @@ public class Game implements Serializable {
             }
         }
     }
+
+    public Player checkForWinner(Player[] players) {
+        for (Player p: players)
+        {
+            if (p.getHand().size() == 0)
+            {
+                p.setWinner(true);
+                return p;
+            }
+        }
+        return null;
+    }
 }

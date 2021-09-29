@@ -55,6 +55,21 @@ public class Player implements Serializable {
         this.hand = ss;
     }
 
+    public void setWinner(Boolean isWinner)
+    {
+        winner = isWinner;
+    }
+
+    public int getScore()
+    {
+        int counter = 0;
+        for (Tile t: this.hand)
+        {
+            counter += t.getNumber();
+        }
+        return counter * -1;
+    }
+
     public Tile getTileFromhand(int n, String c, boolean remove)
     {
         for (int i = 0; i < hand.size(); i++)
@@ -78,9 +93,17 @@ public class Player implements Serializable {
     public void startGame() {
         while (true) {
             int round = clientConnection.receiveRoundNo();
-            System.out.println("\n \n ********Round Number " + round + "********");
             players = clientConnection.receivePlayers();
             melds = clientConnection.receiveMelds();
+            if(game.checkForWinner(players) != null)
+            {
+                System.out.println("Winner: Player " + game.checkForWinner(players).getName());
+                System.out.println("Scores: " + players[0].getName() + ": " + players[0].getScore() +
+                        ", " + players[1].getName() + ": " + players[1].getScore() +
+                        ", " + players[2].getName() + ": " + players[2].getScore());
+                break;
+            }
+            System.out.println("\n \n ********Round Number " + round + "********");
             game.printHand(players[playerId-1]);
             game.printMelds(melds);
 
@@ -105,6 +128,14 @@ public class Player implements Serializable {
             melds = clientConnection.receiveMelds();
             game.printHand(players[playerId-1]);
             game.printMelds(melds);
+            if(game.checkForWinner(players) != null)
+            {
+                System.out.println("Winner: Player " + game.checkForWinner(players).getName());
+                System.out.println("Scores: " + players[0].getName() + ": " + players[0].getScore() +
+                        ", " + players[1].getName() + ": " + players[1].getScore() +
+                        ", " + players[2].getName() + ": " + players[2].getScore());
+                break;
+            }
         }
     }
 
