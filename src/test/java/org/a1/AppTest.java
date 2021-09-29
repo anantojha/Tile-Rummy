@@ -803,6 +803,9 @@ public class AppTest extends TestCase {
      */
     public void testSimpleTableReuseCase1() {
         //setup
+        System.out.println();
+        System.out.println("Test: Simple Reuse From Table - Case 1");
+
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
         Player p2 = new Player("P2");
@@ -878,6 +881,9 @@ public class AppTest extends TestCase {
      */
     public void testSimpleTableReuseCase2() {
         //setup
+        System.out.println();
+        System.out.println("Test: Simple Reuse From Table - Case 2");
+
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
         Player p2 = new Player("P2");
@@ -952,6 +958,9 @@ public class AppTest extends TestCase {
      */
     public void testSimpleTableReuseCase3() {
         //setup
+        System.out.println();
+        System.out.println("Test: Simple Reuse From Table - Case 3");
+
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
         Player p2 = new Player("P2");
@@ -985,6 +994,8 @@ public class AppTest extends TestCase {
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated (1 new meld)
         assertTrue(gs.tiles.size() == 76);       // unused tiles updated
+
+        game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' from tiles previously used.
 
         /* Player 3 plays a new meld {O7,O8,O9,O10,O11,O12,O13} */
         game.drawNewTile(p3, 7, "O", gs.tiles);
