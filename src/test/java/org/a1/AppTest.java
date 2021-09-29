@@ -715,4 +715,79 @@ public class AppTest extends TestCase {
         game.printMelds(gs.melds);
         game.printRemainingTiles(gs.tiles);
     }
+
+    /*
+     *  Test Case: test player winning a game
+     */
+    public void testWinningPlayer() {
+        GameServer gs = new GameServer(true);
+        Player p1 = new Player("P1");
+        Player p2 = new Player("P2");
+        Player p3 = new Player("P3");
+        gs.players[0] = p1;
+        gs.players[1] = p2;
+        gs.players[2] = p3;
+        gs.tiles = game.generateTiles(); // generate all tiles
+
+        // create player 1s hand - {B2,B2,O2,R3,G3,G3,R5,G6,O7,R9,R10,B11,G12,G13}
+        game.drawNewTile(p1, 3, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "O", gs.tiles);
+        game.drawNewTile(p1, 3, "R", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 5, "R", gs.tiles);
+        game.drawNewTile(p1, 6, "G", gs.tiles);
+        game.drawNewTile(p1, 7, "O", gs.tiles);
+        game.drawNewTile(p1, 9, "R", gs.tiles);
+        game.drawNewTile(p1, 10, "R", gs.tiles);
+        game.drawNewTile(p1, 11, "B", gs.tiles);
+        game.drawNewTile(p1, 12, "G", gs.tiles);
+        game.drawNewTile(p1, 13, "G", gs.tiles);
+
+        // create player 2s hand - {2H 2S 2C 2D} {3C 4C 6C 7C} {4D 5D 6D 7D 8D} //{R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}
+        game.drawNewTile(p2, 2, "R", gs.tiles);
+        game.drawNewTile(p2, 2, "G", gs.tiles);
+        game.drawNewTile(p2, 2, "B", gs.tiles);
+        game.drawNewTile(p2, 2, "O", gs.tiles);
+        game.drawNewTile(p2, 3, "B", gs.tiles);
+        game.drawNewTile(p2, 4, "B", gs.tiles);
+        game.drawNewTile(p2, 6, "B", gs.tiles);
+        game.drawNewTile(p2, 7, "B", gs.tiles);
+        game.drawNewTile(p2, 4, "O", gs.tiles);
+        game.drawNewTile(p2, 5, "O", gs.tiles);
+        game.drawNewTile(p2, 6, "O", gs.tiles);
+        game.drawNewTile(p2, 7, "O", gs.tiles);
+        game.drawNewTile(p2, 8, "O", gs.tiles);
+
+        // create player 3s hand - 4H 6D 6D 7S 7H 8C {10H JH QH KH} {10S JS QS KS}
+        game.drawNewTile(p3, 4, "R", gs.tiles);
+        game.drawNewTile(p3, 6, "O", gs.tiles);
+        game.drawNewTile(p3, 6, "O", gs.tiles);
+        game.drawNewTile(p3, 7, "G", gs.tiles);
+        game.drawNewTile(p3, 7, "R", gs.tiles);
+        game.drawNewTile(p3, 8, "B", gs.tiles);
+        game.drawNewTile(p3, 10, "R", gs.tiles);
+        game.drawNewTile(p3, 11, "R", gs.tiles);
+        game.drawNewTile(p3, 12, "R", gs.tiles);
+        game.drawNewTile(p3, 13, "R", gs.tiles);
+        game.drawNewTile(p3, 10, "G", gs.tiles);
+        game.drawNewTile(p3, 11, "G", gs.tiles);
+        game.drawNewTile(p3, 12, "G", gs.tiles);
+        game.drawNewTile(p3, 13, "G", gs.tiles);
+
+        //P1 draws 2H
+        game.drawNewTile(p1, 2, "R", gs.tiles);
+        //P2 chooses to draw and draws 5C
+        game.drawNewTile(p2, 5, "B", gs.tiles);
+        //P3 plays  {10H JH QH KH} {10S JS QS KS}
+        game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{R10,R11,R12,R13}{G10,G11,G12,G13}")));
+        //P1 plays {2C 2D 2H}
+        game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B3,O2,R2}")));
+        //P2 plays and wins: {2H 2S 2C 2D} {3C 4C 5C 6C 7C} {4D 5D 6D 7D 8D}
+        game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}")));
+
+        //check for winner
+        assertTrue(game.checkForWinner(gs.players).getName().equals("P2"));
+    }
 }
