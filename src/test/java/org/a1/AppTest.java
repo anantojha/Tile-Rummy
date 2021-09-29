@@ -1,6 +1,7 @@
 package org.a1;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 import static org.junit.Assert.assertTrue;
 
@@ -789,5 +790,8 @@ public class AppTest extends TestCase {
 
         //check for winner
         assertTrue(game.checkForWinner(gs.players).getName().equals("P2"));
+        assertTrue(gs.players[0].score == -78);
+        assertTrue(gs.players[1].score == 0);
+        assertTrue(gs.players[2].score == -38);
     }
 }
