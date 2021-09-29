@@ -65,7 +65,7 @@ public class Player implements Serializable {
         int counter = 0;
         for (Tile t: this.hand)
         {
-            counter += t.getNumber();
+            counter += t.getPoints();
         }
         return counter * -1;
     }
