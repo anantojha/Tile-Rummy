@@ -310,6 +310,14 @@ public class Game implements Serializable {
 
     }
 
+    public void printWinner(Player[] players)
+    {
+        System.out.println("Winner: Player " + checkForWinner(players).getName());
+        System.out.println("Scores: " + players[0].getName() + ": " + players[0].getScore() +
+                ", " + players[1].getName() + ": " + players[1].getScore() +
+                ", " + players[2].getName() + ": " + players[2].getScore());
+    }
+
     public void resetPreviouslyMovedTile(Player[] players, ArrayList<Tile> tiles, ArrayList<ArrayList<Tile>> melds)
     {
         for (Player p : players)

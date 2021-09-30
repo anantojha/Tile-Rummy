@@ -35,6 +35,7 @@ public class GameServer implements Serializable
         gs.acceptConnections();
         gs.gameLoop();
         System.out.println("Game Over");
+        System.exit(1);
     }
 
     public GameServer(boolean test) {
@@ -96,52 +97,123 @@ public class GameServer implements Serializable
 
     public void gameLoop() {
         try {
-            boolean stop = false;
             tiles = game.createPlayerHands(players, game.generateTiles());
             System.out.println("Initials Hands:");
             game.printPlayerHands(players);
             game.printRemainingTiles(tiles);
+            int counter = 0;
 
-            while (stop != true) {
-                turnsMade++;
-                if(game.checkForWinner(players) != null)
-                {
-                    System.out.println("Winner: Player " + game.checkForWinner(players).getName());
-                    break;
+            while (true) {
+                if(game.checkForWinner(players) == null) {
+                    turnsMade++;
+                    System.out.println("*****************************************");
+                    System.out.println("Round number " + turnsMade);
                 }
-                System.out.println("*****************************************");
-                System.out.println("Round number " + turnsMade);
 
-                for (int i = 0; i < 3; i++)
-                {
-                    if(game.checkForWinner(players) != null)
-                    {
-                        System.out.println("Winner: Player " + game.checkForWinner(players).getName());
-                        stop = true;
-                        break;
-                    }
-                    playerServer[i].sendTurnNo(turnsMade);
-                    playerServer[i].sendPlayers(players);
-                    playerServer[i].sendMelds(melds);
+                // Player 1s turn
+                playerServer[0].sendTurnNo(turnsMade);
+                playerServer[0].sendPlayers(players);
+                playerServer[0].sendMelds(melds);
+                if(game.checkForWinner(players) == null) {
+                    playerServer[0].sendAction(0);
 
                     game.resetPreviouslyMovedTile(players, tiles, melds);
 
                     // receive action 1 or 2
-                    int action = playerServer[i].receiveAction();
+                    int action = playerServer[0].receiveAction();
                     if (action == 1) {
                         // draw new tile for player
-                        game.drawNewTile(players[i], tiles);
+                        game.drawNewTile(players[0], tiles);
                     } else if (action == 2) {
                         // add meld (run or set) to table
                         //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
-                        ArrayList<ArrayList<Tile>> inMelds = playerServer[i].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
-                        game.playMelds(players[i], melds, inMelds);
+                        ArrayList<ArrayList<Tile>> inMelds = playerServer[0].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
+                        game.playMelds(players[0], melds, inMelds);
                     }
-                    playerServer[i].sendPlayers(players);
-                    playerServer[i].sendMelds(melds);
-                    game.printHand(players[i]);
+                    playerServer[0].sendPlayers(players);
+                    playerServer[0].sendMelds(melds);
+                    game.printHand(players[0]);
                     game.printMelds(melds);
                     game.printRemainingTiles(tiles);
+                } else {
+                    playerServer[0].sendAction(1);
+                    counter += 1;
+                    if(counter == 3){
+                        break;
+                    } else if (counter == 1) {
+                        game.printWinner(players);
+                    }
+                }
+
+
+                // Player 2s turn
+                playerServer[1].sendTurnNo(turnsMade);
+                playerServer[1].sendPlayers(players);
+                playerServer[1].sendMelds(melds);
+                if(game.checkForWinner(players) == null) {
+                    playerServer[1].sendAction(0);
+
+                    game.resetPreviouslyMovedTile(players, tiles, melds);
+
+                    // receive action 1 or 2
+                    int action2 = playerServer[1].receiveAction();
+                    if (action2 == 1) {
+                        // draw new tile for player
+                        game.drawNewTile(players[1], tiles);
+                    } else if (action2 == 2) {
+                        // add meld (run or set) to table
+                        //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
+                        ArrayList<ArrayList<Tile>> inMelds = playerServer[1].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
+                        game.playMelds(players[1], melds, inMelds);
+                    }
+                    playerServer[1].sendPlayers(players);
+                    playerServer[1].sendMelds(melds);
+                    game.printHand(players[1]);
+                    game.printMelds(melds);
+                    game.printRemainingTiles(tiles);
+                } else {
+                    playerServer[1].sendAction(1);
+                    counter += 1;
+                    if(counter == 3){
+                        break;
+                    } else if (counter == 1) {
+                        game.printWinner(players);
+                    }
+                }
+
+                // Player 3s turn
+                playerServer[2].sendTurnNo(turnsMade);
+                playerServer[2].sendPlayers(players);
+                playerServer[2].sendMelds(melds);
+                if(game.checkForWinner(players) == null) {
+                    playerServer[2].sendAction(0);
+
+                    game.resetPreviouslyMovedTile(players, tiles, melds);
+
+                    // receive action 1 or 2
+                    int action3 = playerServer[2].receiveAction();
+                    if (action3 == 1) {
+                        // draw new tile for player
+                        game.drawNewTile(players[2], tiles);
+                    } else if (action3 == 2) {
+                        // add meld (run or set) to table
+                        //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
+                        ArrayList<ArrayList<Tile>> inMelds = playerServer[2].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
+                        game.playMelds(players[2], melds, inMelds);
+                    }
+                    playerServer[2].sendPlayers(players);
+                    playerServer[2].sendMelds(melds);
+                    game.printHand(players[2]);
+                    game.printMelds(melds);
+                    game.printRemainingTiles(tiles);
+                } else {
+                    playerServer[2].sendAction(1);
+                    counter += 1;
+                    if(counter == 3){
+                        break;
+                    } else if (counter == 1) {
+                        game.printWinner(players);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -213,6 +285,16 @@ public class GameServer implements Serializable
                 dOut.flush();
             } catch (Exception e) {
                 System.out.println("Turn Number not received");
+                e.printStackTrace();
+            }
+        }
+
+        public void sendAction(int r) {
+            try {
+                dOut.writeInt(r);
+                dOut.flush();
+            } catch (Exception e) {
+                System.out.println("Action not sent");
                 e.printStackTrace();
             }
         }

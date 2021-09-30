@@ -95,45 +95,41 @@ public class Player implements Serializable {
             int round = clientConnection.receiveRoundNo();
             players = clientConnection.receivePlayers();
             melds = clientConnection.receiveMelds();
-            if(game.checkForWinner(players) != null)
-            {
-                System.out.println("Winner: Player " + game.checkForWinner(players).getName());
-                System.out.println("Scores: " + players[0].getName() + ": " + players[0].getScore() +
-                        ", " + players[1].getName() + ": " + players[1].getScore() +
-                        ", " + players[2].getName() + ": " + players[2].getScore());
-                break;
-            }
-            System.out.println("\n \n ********Round Number " + round + "********");
-            game.printHand(players[playerId-1]);
-            game.printMelds(melds);
-
-            String[] userInputMelds = playRound();
-            if(userInputMelds == null){
-                clientConnection.sendAction(1);
-            } else {
-                ArrayList<ArrayList<Tile>> meldIn = game.convertMeldInputToTiles(userInputMelds);
-                if (game.initialMeldsAtLeastThirty(this, meldIn)) {
-                    clientConnection.sendAction(2);
-                    clientConnection.sendMeld(meldIn);
-                    this.initialThirty = true;
-                } else {
-                    System.out.println("Initial Melds did not equal at least 30");
-                    System.out.println("New Tile is added to your hand");
-                    clientConnection.sendAction(1);
+            if (clientConnection.receiveAction() == 0) {
+                if (game.checkForWinner(players) != null) {
+                    System.out.println("Winner: Player " + game.checkForWinner(players).getName());
+                    System.out.println("Scores: " + players[0].getName() + ": " + players[0].getScore() +
+                            ", " + players[1].getName() + ": " + players[1].getScore() +
+                            ", " + players[2].getName() + ": " + players[2].getScore());
+                    break;
                 }
-            }
+                System.out.println("\n \n ********Round Number " + round + "********");
+                game.printHand(players[playerId - 1]);
+                game.printMelds(melds);
 
-            System.out.println("Updated hand & Table: ");
-            players = clientConnection.receivePlayers();
-            melds = clientConnection.receiveMelds();
-            game.printHand(players[playerId-1]);
-            game.printMelds(melds);
-            if(game.checkForWinner(players) != null)
-            {
-                System.out.println("Winner: Player " + game.checkForWinner(players).getName());
-                System.out.println("Scores: " + players[0].getName() + ": " + players[0].getScore() +
-                        ", " + players[1].getName() + ": " + players[1].getScore() +
-                        ", " + players[2].getName() + ": " + players[2].getScore());
+                String[] userInputMelds = playRound();
+                if (userInputMelds == null) {
+                    clientConnection.sendAction(1);
+                } else {
+                    ArrayList<ArrayList<Tile>> meldIn = game.convertMeldInputToTiles(userInputMelds);
+                    if (game.initialMeldsAtLeastThirty(this, meldIn)) {
+                        clientConnection.sendAction(2);
+                        clientConnection.sendMeld(meldIn);
+                        this.initialThirty = true;
+                    } else {
+                        System.out.println("Initial Melds did not equal at least 30");
+                        System.out.println("New Tile is added to your hand");
+                        clientConnection.sendAction(1);
+                    }
+                }
+
+                System.out.println("Updated hand & Table: ");
+                players = clientConnection.receivePlayers();
+                melds = clientConnection.receiveMelds();
+                game.printHand(players[playerId - 1]);
+                game.printMelds(melds);
+            } else {
+                game.printWinner(players);
                 break;
             }
         }
@@ -252,6 +248,17 @@ public class Player implements Serializable {
                 e.printStackTrace();
             }
             return 0;
+        }
+
+        public int receiveAction() {
+            try {
+                int act = dIn.readInt();
+                return act;
+            } catch (Exception e) {
+                System.out.println("Action not received");
+                e.printStackTrace();
+            }
+            return -1;
         }
 
         public ArrayList<ArrayList<Tile>> receiveMelds() {
