@@ -104,7 +104,6 @@ public class GameServer implements Serializable
 
             while (stop != true) {
                 turnsMade++;
-                game.resetPreviouslyMovedTile(players, tiles, melds);
                 if(game.checkForWinner(players) != null)
                 {
                     System.out.println("Winner: Player " + game.checkForWinner(players).getName());
@@ -124,6 +123,8 @@ public class GameServer implements Serializable
                     playerServer[i].sendTurnNo(turnsMade);
                     playerServer[i].sendPlayers(players);
                     playerServer[i].sendMelds(melds);
+
+                    game.resetPreviouslyMovedTile(players, tiles, melds);
 
                     // receive action 1 or 2
                     int action = playerServer[i].receiveAction();
