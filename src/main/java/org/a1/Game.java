@@ -181,6 +181,8 @@ public class Game implements Serializable {
             meld.add(group);
         }
 
+        meld.removeIf(ArrayList::isEmpty);
+
         player.initialThirty = true;
 
         return true;
