@@ -20,8 +20,7 @@ Adding Tile to Meld on Table
    ![AddingTileToExistingMeld](src/Images/AddingTileToExistingMeld.png)
 New Meld from Splitting Melds on Table
    ![SplittingMelds](src/Images/SplittingMelds.png) 
-<br> 
-<br> 
+
 SAMPLE PLAY - (New Melds + Reuse Combined)
 ![NewMeldReuseTiles](src/Images/NewMeldReuseTiles.png) 
    
