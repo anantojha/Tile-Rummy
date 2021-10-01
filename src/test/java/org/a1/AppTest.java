@@ -695,6 +695,9 @@ public class AppTest extends TestCase {
      *  - verify updates to player's hand, melds on table and unused tiles
      */
     public void testPlayingARound() {
+        System.out.println();
+        System.out.println("Test: Start a new game and play a round with 3 players");
+
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
         Player p2 = new Player("P2");
@@ -1099,7 +1102,7 @@ public class AppTest extends TestCase {
     public void testSimpleTableReuseCase4() {
         //setup
         System.out.println();
-        System.out.println("Test: Simple Reuse From Table - Case 3");
+        System.out.println("Test: Simple Reuse From Table - Case 4");
 
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
@@ -1179,7 +1182,7 @@ public class AppTest extends TestCase {
     public void testSimpleTableReuseCase5() {
         //setup
         System.out.println();
-        System.out.println("Test: Simple Reuse From Table - Case 3");
+        System.out.println("Test: Simple Reuse From Table - Case 5");
 
         GameServer gs = new GameServer(true);
         Player p1 = new Player("P1");
