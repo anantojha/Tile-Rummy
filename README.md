@@ -10,7 +10,7 @@ GamePlay Instructions:
 ![DrawingNewTile](src/Images/DrawNewTile.png)
 
 2. Playing a new Meld <br>
-Single Meld:
+Single Meld
    ![PlayingSingleMeld](src/Images/PlayingSingleMeld.png)
 Multiple Melds
    ![PlayingMultipleMeld](src/Images/PlayingMultipleMelds.png)
