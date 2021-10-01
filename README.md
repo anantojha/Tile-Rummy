@@ -23,5 +23,5 @@ New Meld from Splitting Melds on Table
 <br> 
 <br> 
 SAMPLE PLAY - (New Melds + Reuse Combined)
-![SplittingMelds](src/Images/NewMeld&ReuseTiles.png) 
+![NewMeldReuseTiles](src/Images/NewMeldReuseTiles.png) 
    
