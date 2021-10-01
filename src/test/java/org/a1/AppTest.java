@@ -108,14 +108,14 @@ public class AppTest extends TestCase {
         gs.players[0] = p1;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R12,B12,G12} and 11 random tiles
+        // create player 1s hand - {R12,G12,B12} and 11 random tiles
         game.drawNewTile(p1, 12, "R", gs.tiles);
-        game.drawNewTile(p1, 12, "B", gs.tiles);
         game.drawNewTile(p1, 12, "G", gs.tiles);
+        game.drawNewTile(p1, 12, "B", gs.tiles);
         game.drawNewTiles(p1, 11, gs.tiles);
 
         assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
-        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R12,B12,G12}")))); // Check for initial meld being at least 30 points
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R12,G12,B12}")))); // Check for initial meld being at least 30 points
     }
 
     /*
@@ -150,13 +150,13 @@ public class AppTest extends TestCase {
 
         // create player 1s hand - {R13,B13,G13,O13} and 10 random tiles
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 13, "B", gs.tiles);
         game.drawNewTile(p1, 13, "G", gs.tiles);
+        game.drawNewTile(p1, 13, "B", gs.tiles);
         game.drawNewTile(p1, 13, "O", gs.tiles);
         game.drawNewTiles(p1, 10, gs.tiles);
 
         assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
-        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R13,B13,G13,O13}")))); // Check for initial meld being at least 30 points
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R13,G13,B13,O13}")))); // Check for initial meld being at least 30 points
     }
 
     /*
@@ -168,17 +168,17 @@ public class AppTest extends TestCase {
         gs.players[0] = p1;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R2,R3,R4}{G7,G8,G9} and 8 random tiles
+        // create player 1s hand - {R2,R3,R4}{B7,B8,B9} and 8 random tiles
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 3, "R", gs.tiles);
         game.drawNewTile(p1, 4, "R", gs.tiles);
-        game.drawNewTile(p1, 7, "G", gs.tiles);
-        game.drawNewTile(p1, 8, "G", gs.tiles);
-        game.drawNewTile(p1, 9, "G", gs.tiles);
+        game.drawNewTile(p1, 7, "B", gs.tiles);
+        game.drawNewTile(p1, 8, "B", gs.tiles);
+        game.drawNewTile(p1, 9, "B", gs.tiles);
         game.drawNewTiles(p1, 8, gs.tiles);
 
         assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
-        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,R3,R4}{G7,G8,G9}")))); // Check for initial meld being at least 30 points
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,R3,R4}{B7,B8,B9}")))); // Check for initial meld being at least 30 points
     }
 
     /*
@@ -190,20 +190,20 @@ public class AppTest extends TestCase {
         gs.players[0] = p1;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R2,G2,O2}{B4,O4,R4}{O5,G5,R5} and 5 random tiles
+        // create player 1s hand - {R2,B2,O2}{G4,O4,R4}{O5,B5,R5} and 5 random tiles
         game.drawNewTile(p1, 2, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "G", gs.tiles);
+        game.drawNewTile(p1, 2, "B", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
-        game.drawNewTile(p1, 4, "B", gs.tiles);
+        game.drawNewTile(p1, 4, "G", gs.tiles);
         game.drawNewTile(p1, 4, "O", gs.tiles);
         game.drawNewTile(p1, 4, "R", gs.tiles);
         game.drawNewTile(p1, 5, "O", gs.tiles);
-        game.drawNewTile(p1, 5, "G", gs.tiles);
+        game.drawNewTile(p1, 5, "B", gs.tiles);
         game.drawNewTile(p1, 5, "R", gs.tiles);
         game.drawNewTiles(p1, 5, gs.tiles);
 
         assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
-        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,G2,O2}{B4,O4,R4}{O5,G5,R5}")))); // Check for initial meld being at least 30 points
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,B2,O2}{G4,O4,R4}{O5,B5,R5}")))); // Check for initial meld being at least 30 points
     }
 
     /*
@@ -214,10 +214,10 @@ public class AppTest extends TestCase {
         Player p1 = new Player("P1");
         gs.players[0] = p1;
         gs.tiles = game.generateTiles(); // generate all tiles
-
+// {8H 8C 8D} {2H 3H 4H}
         // create player 1s hand - {R8,G8,O8}{R2,R3,R4} and 8 random tiles
         game.drawNewTile(p1, 8, "R", gs.tiles);
-        game.drawNewTile(p1, 8, "B", gs.tiles);
+        game.drawNewTile(p1, 8, "G", gs.tiles);
         game.drawNewTile(p1, 8, "O", gs.tiles);
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 3, "R", gs.tiles);
@@ -237,23 +237,23 @@ public class AppTest extends TestCase {
         gs.players[0] = p1;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R2,O2,G2}{B2,B3,B4}{R3,G3,O3}{G5,G6,G7} and 8 random tiles
+        // create player 1s hand - {R2,O2,B2}{G2,G3,G4}{R3,B3,O3}{B5,B6,B7} and 8 random tiles
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
-        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "B", gs.tiles);
-        game.drawNewTile(p1, 3, "B", gs.tiles);
-        game.drawNewTile(p1, 4, "B", gs.tiles);
-        game.drawNewTile(p1, 3, "R", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 4, "G", gs.tiles);
+        game.drawNewTile(p1, 3, "R", gs.tiles);
+        game.drawNewTile(p1, 3, "B", gs.tiles);
         game.drawNewTile(p1, 3, "O", gs.tiles);
-        game.drawNewTile(p1, 5, "G", gs.tiles);
-        game.drawNewTile(p1, 6, "G", gs.tiles);
-        game.drawNewTile(p1, 7, "G", gs.tiles);
+        game.drawNewTile(p1, 5, "B", gs.tiles);
+        game.drawNewTile(p1, 6, "B", gs.tiles);
+        game.drawNewTile(p1, 7, "B", gs.tiles);
         game.drawNewTiles(p1, 2, gs.tiles);
 
         assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
-        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,O2,G2}{B2,B3,B4}{R3,G3,O3}{G5,G6,G7}")))); // Check for initial meld being at least 30 points
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,O2,B2}{G2,G3,G4}{R3,B3,O3}{B5,B6,B7}")))); // Check for initial meld being at least 30 points
     }
 
     /*
@@ -265,16 +265,17 @@ public class AppTest extends TestCase {
         gs.players[0] = p1;
         gs.tiles = game.generateTiles(); // generate all tiles
 
+        //{2H 2S 2C 2D} {3C 4C 5C 6C 7C} {4D 5D 6D 7D 8D}
         // create player 1s hand - {R2,O2,G2}{B2,B3,B4}{R3,G3,O3} and 8 random tiles
         game.drawNewTile(p1, 2, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
-        game.drawNewTile(p1, 3, "B", gs.tiles);
-        game.drawNewTile(p1, 4, "B", gs.tiles);
-        game.drawNewTile(p1, 5, "B", gs.tiles);
-        game.drawNewTile(p1, 6, "B", gs.tiles);
-        game.drawNewTile(p1, 7, "B", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 4, "G", gs.tiles);
+        game.drawNewTile(p1, 5, "G", gs.tiles);
+        game.drawNewTile(p1, 6, "G", gs.tiles);
+        game.drawNewTile(p1, 7, "G", gs.tiles);
         game.drawNewTile(p1, 4, "O", gs.tiles);
         game.drawNewTile(p1, 5, "O", gs.tiles);
         game.drawNewTile(p1, 6, "O", gs.tiles);
@@ -282,7 +283,7 @@ public class AppTest extends TestCase {
         game.drawNewTile(p1, 8, "O", gs.tiles);
 
         assertTrue(p1.getHand().size() == 14);   // player 1s hand has 14 tiles
-        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}")))); // Check for initial meld being at least 30 points
+        assertTrue(game.initialMeldsAtLeastThirty(p1, game.convertMeldInputToTiles(p1.processInputMelds("{R2,B2,G2,O2}{G3,G4,G5,G6,G7}{O4,O5,O6,O7,O8}")))); // Check for initial meld being at least 30 points
     }
 
     /*
