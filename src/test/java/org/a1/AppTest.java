@@ -300,18 +300,18 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R11,R12,R13}{B2,B3,B4} and 8 random tiles
+        // create player 1s hand - {R11,R12,R13}{G2,G3,G4} and 8 random tiles
         game.drawNewTile(p1, 11, "R", gs.tiles);
         game.drawNewTile(p1, 12, "R", gs.tiles);
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
-        game.drawNewTile(p1, 3, "B", gs.tiles);
-        game.drawNewTile(p1, 4, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 4, "G", gs.tiles);
 
-        // create player 2s hand - {G11,G12,G13} and 11 random tiles
-        game.drawNewTile(p2, 11, "G", gs.tiles);
-        game.drawNewTile(p2, 12, "G", gs.tiles);
-        game.drawNewTile(p2, 13, "G", gs.tiles);
+        // create player 2s hand - {B11,B12,B13} and 11 random tiles
+        game.drawNewTile(p2, 11, "B", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+        game.drawNewTile(p2, 13, "B", gs.tiles);
 
         // create player 3s hand - {O11,O12,O13} and 11 random tiles
         game.drawNewTile(p3, 11, "O", gs.tiles);
@@ -329,9 +329,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 1);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-        // P2 plays {G11,G12,G13}
+        // P2 plays {B11,B12,B13}
         assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
-        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{G11,G12,G13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{B11,B12,B13}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -345,7 +345,7 @@ public class AppTest extends TestCase {
 
         // test case: P1 plays {2C 3C 4C} for turn #2
         assertTrue(p1.getHand().size() == 11);   // player 1s hand has 11 tiles
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,B3,B4}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,G3,G4}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 8);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 4);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -365,21 +365,21 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R11,R12,R13}{B2,B3,B4}{O8,O9,O10} and 5 random tiles
+        // create player 1s hand - {R11,R12,R13}{G2,G3,G4}{O8,O9,O10} and 5 random tiles
         game.drawNewTile(p1, 11, "R", gs.tiles);
         game.drawNewTile(p1, 12, "R", gs.tiles);
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
-        game.drawNewTile(p1, 3, "B", gs.tiles);
-        game.drawNewTile(p1, 4, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 4, "G", gs.tiles);
         game.drawNewTile(p1, 8, "O", gs.tiles);
         game.drawNewTile(p1, 9, "O", gs.tiles);
         game.drawNewTile(p1, 10, "O", gs.tiles);
 
-        // create player 2s hand - {G11,G12,G13} and 11 random tiles
-        game.drawNewTile(p2, 11, "G", gs.tiles);
-        game.drawNewTile(p2, 12, "G", gs.tiles);
-        game.drawNewTile(p2, 13, "G", gs.tiles);
+        // create player 2s hand - {B11,B12,B13} and 11 random tiles
+        game.drawNewTile(p2, 11, "B", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+        game.drawNewTile(p2, 13, "B", gs.tiles);
 
         // create player 3s hand - {O11,O12,O13} and 11 random tiles
         game.drawNewTile(p3, 11, "O", gs.tiles);
@@ -397,9 +397,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 1);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-        //Player 2 plays: {G11,G12,G13}
+        //Player 2 plays: {B11,B12,B13}
         assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
-        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{G11,G12,G13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{B11,B12,B13}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -413,7 +413,7 @@ public class AppTest extends TestCase {
 
         // test case: P1 plays {2C 3C 4C}{8D 9D 10D} for turn #2
         assertTrue(p1.getHand().size() == 11);   // player 1s hand has 11 tiles
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,B3,B4}{O8,O9,O10}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,G3,G4}{O8,O9,O10}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 5);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 5);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -433,18 +433,18 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R11,R12,R13}{B2,R2,O2} and 8 random tiles
+        // create player 1s hand - {R11,R12,R13}{G2,R2,O2} and 8 random tiles
         game.drawNewTile(p1, 11, "R", gs.tiles);
         game.drawNewTile(p1, 12, "R", gs.tiles);
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
 
-        // create player 2s hand - {G11,G12,G13} and 11 random tiles
-        game.drawNewTile(p2, 11, "G", gs.tiles);
-        game.drawNewTile(p2, 12, "G", gs.tiles);
-        game.drawNewTile(p2, 13, "G", gs.tiles);
+        // create player 2s hand - {B11,B12,B13} and 11 random tiles
+        game.drawNewTile(p2, 11, "B", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+        game.drawNewTile(p2, 13, "B", gs.tiles);
 
         // create player 3s hand - {O11,O12,O13} and 11 random tiles
         game.drawNewTile(p3, 11, "O", gs.tiles);
@@ -462,9 +462,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 1);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-        // P2 plays {G11,G12,G13}
+        // P2 plays {B11,B12,B13}
         assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
-        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{G11,G12,G13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{B11,B12,B13}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -478,7 +478,7 @@ public class AppTest extends TestCase {
 
         // test case: P1 plays {2C 2H 2D} for turn #2
         assertTrue(p1.getHand().size() == 11);   // player 1s hand has 11 tiles
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,R2,O2}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,R2,O2}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 8);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 4);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -498,22 +498,22 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R11,R12,R13}{B2,R2,O2}{O8,R8,G8,B8} and 4 random tiles
+        // create player 1s hand - {R11,R12,R13}{G2,R2,O2}{O8,R8,B8,G8} and 4 random tiles
         game.drawNewTile(p1, 11, "R", gs.tiles);
         game.drawNewTile(p1, 12, "R", gs.tiles);
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
         game.drawNewTile(p1, 8, "O", gs.tiles);
         game.drawNewTile(p1, 8, "R", gs.tiles);
-        game.drawNewTile(p1, 8, "G", gs.tiles);
         game.drawNewTile(p1, 8, "B", gs.tiles);
+        game.drawNewTile(p1, 8, "G", gs.tiles);
 
-        // create player 2s hand - {G11,G12,G13} and 11 random tiles
-        game.drawNewTile(p2, 11, "G", gs.tiles);
-        game.drawNewTile(p2, 12, "G", gs.tiles);
-        game.drawNewTile(p2, 13, "G", gs.tiles);
+        // create player 2s hand - {B11,B12,B13} and 11 random tiles
+        game.drawNewTile(p2, 11, "B", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+        game.drawNewTile(p2, 13, "B", gs.tiles);
 
         // create player 3s hand - {O11,O12,O13} and 11 random tiles
         game.drawNewTile(p3, 11, "O", gs.tiles);
@@ -531,9 +531,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 1);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-        // P2 plays {G11,G12,G13}
+        // P2 plays {B11,B12,B13}
         assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
-        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{G11,G12,G13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{B11,B12,B13}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -547,7 +547,7 @@ public class AppTest extends TestCase {
 
         // test case: P1 plays {2C 2H 2D} {8D 8H 8S 8C} for turn #2
         assertTrue(p1.getHand().size() == 11);   // player 1s hand has 11 tiles
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,R2,O2}{O8,R8,G8,B8}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,R2,O2}{O8,R8,B8,G8}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 4);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 5);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -567,21 +567,21 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R11,R12,R13}{B2,R2,O2}{O8,O9,O10} and 5 random tiles
+        // create player 1s hand - {R11,R12,R13}{G2,R2,O2}{O8,O9,O10} and 5 random tiles
         game.drawNewTile(p1, 11, "R", gs.tiles);
         game.drawNewTile(p1, 12, "R", gs.tiles);
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
         game.drawNewTile(p1, 8, "O", gs.tiles);
         game.drawNewTile(p1, 9, "O", gs.tiles);
         game.drawNewTile(p1, 10, "O", gs.tiles);
 
-        // create player 2s hand - {G11,G12,G13} and 11 random tiles
-        game.drawNewTile(p2, 11, "G", gs.tiles);
-        game.drawNewTile(p2, 12, "G", gs.tiles);
-        game.drawNewTile(p2, 13, "G", gs.tiles);
+        // create player 2s hand - {B11,B12,B13} and 11 random tiles
+        game.drawNewTile(p2, 11, "B", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+        game.drawNewTile(p2, 13, "B", gs.tiles);
 
         // create player 3s hand - {O11,O12,O13} and 11 random tiles
         game.drawNewTile(p3, 11, "O", gs.tiles);
@@ -601,7 +601,7 @@ public class AppTest extends TestCase {
 
         // P2 plays {G11,G12,G13}
         assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
-        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{G11,G12,G13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{B11,B12,B13}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -615,7 +615,7 @@ public class AppTest extends TestCase {
 
         // test case: P1 plays {2C 2H 2D} {8D 9D 10D} for turn #2
         assertTrue(p1.getHand().size() == 11);   // player 1s hand has 11 tiles
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,R2,O2}{O8,O9,O10}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,R2,O2}{O8,O9,O10}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 5);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 5);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -635,26 +635,26 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {R11,R12,R13}{B2,R2,O2}{B3,R3,O3}{B8,B9,B10,B11,B12} and 8 random tiles
+        // create player 1s hand - {R11,R12,R13}{G2,R2,O2}{G3,R3,O3}{G8,G9,G10,G11,G12} and 8 random tiles
         game.drawNewTile(p1, 11, "R", gs.tiles);
         game.drawNewTile(p1, 12, "R", gs.tiles);
         game.drawNewTile(p1, 13, "R", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "R", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
-        game.drawNewTile(p1, 3, "B", gs.tiles);
+        game.drawNewTile(p1, 3, "G", gs.tiles);
         game.drawNewTile(p1, 3, "R", gs.tiles);
         game.drawNewTile(p1, 3, "O", gs.tiles);
-        game.drawNewTile(p1, 8, "B", gs.tiles);
-        game.drawNewTile(p1, 9, "B", gs.tiles);
-        game.drawNewTile(p1, 10, "B", gs.tiles);
-        game.drawNewTile(p1, 11, "B", gs.tiles);
-        game.drawNewTile(p1, 12, "B", gs.tiles);
+        game.drawNewTile(p1, 8, "G", gs.tiles);
+        game.drawNewTile(p1, 9, "G", gs.tiles);
+        game.drawNewTile(p1, 10, "G", gs.tiles);
+        game.drawNewTile(p1, 11, "G", gs.tiles);
+        game.drawNewTile(p1, 12, "G", gs.tiles);
 
-        // create player 2s hand - {G11,G12,G13} and 11 random tiles
-        game.drawNewTile(p2, 11, "G", gs.tiles);
-        game.drawNewTile(p2, 12, "G", gs.tiles);
-        game.drawNewTile(p2, 13, "G", gs.tiles);
+        // create player 2s hand - {B11,B12,B13} and 11 random tiles
+        game.drawNewTile(p2, 11, "B", gs.tiles);
+        game.drawNewTile(p2, 12, "B", gs.tiles);
+        game.drawNewTile(p2, 13, "B", gs.tiles);
 
         // create player 3s hand - {O11,O12,O13} and 11 random tiles
         game.drawNewTile(p3, 11, "O", gs.tiles);
@@ -671,9 +671,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 1);        // melds are updated (1 meld now on table)
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-        // P2 plays {G11,G12,G13}
+        // P2 plays {B11,B12,B13}
         assertTrue(p2.getHand().size() == 14);   // player 2s hand has 14 tiles
-        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{G11,G12,G13}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{B11,B12,B13}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p2.getHand().size() == 11);   // player 2 hand is updated
         assertTrue(gs.melds.size() == 2);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
@@ -685,9 +685,9 @@ public class AppTest extends TestCase {
         assertTrue(gs.melds.size() == 3);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
 
-        // test case: P1 plays {B2,R2,O2} {B3,R3,O3} {B8,B9,B10,B11,B12} for turn #2
+        // test case: P1 plays {G2,R2,O2} {G3,R3,O3} {G8,G9,G10,G11,G12} for turn #2
         assertTrue(p1.getHand().size() == 11);   // player 1s hand has 11 tiles
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,R2,O2}{B3,R3,O3}{B8,B9,B10,B11,B12}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,R2,O2}{G3,R3,O3}{G8,G9,G10,G11,G12}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 0);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 6);        // melds are updated
         assertTrue(gs.tiles.size() == 62);       // unused tiles updated
