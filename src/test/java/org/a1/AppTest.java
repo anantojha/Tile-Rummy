@@ -712,7 +712,7 @@ public class AppTest extends TestCase {
 
         // create player 1s hand
         game.drawNewTile(p1, 12, "R", gs.tiles);
-        game.drawNewTile(p1, 12, "G", gs.tiles);
+        game.drawNewTile(p1, 12, "B", gs.tiles);
         game.drawNewTile(p1, 12, "O", gs.tiles);
 
         // create player 2s hand
@@ -722,15 +722,15 @@ public class AppTest extends TestCase {
 
         // create player 3s hand
         game.drawNewTile(p3, 13, "R", gs.tiles);
-        game.drawNewTile(p3, 13, "G", gs.tiles);
         game.drawNewTile(p3, 13, "B", gs.tiles);
-        game.drawNewTile(p3, 2, "B", gs.tiles);
+        game.drawNewTile(p3, 13, "G", gs.tiles);
+        game.drawNewTile(p3, 2, "G", gs.tiles);
         game.drawNewTile(p3, 2, "R", gs.tiles);
         game.drawNewTile(p3, 2, "O", gs.tiles);
 
-        game.drawNewTiles(p1, 11, gs.tiles);           // create player 1s hand - {R12,G12,O12} and 11 random tiles
+        game.drawNewTiles(p1, 11, gs.tiles);           // create player 1s hand - {R12,B12,O12} and 11 random tiles
         game.drawNewTiles(p2, 11, gs.tiles);           // create player 2s hand - {R11,R12,R13} and 11 random tiles
-        game.drawNewTiles(p3, 8, gs.tiles);            // create player 3s hand - {R13 G13 B13}{B2 R2 O2} and 8 random tiles
+        game.drawNewTiles(p3, 8, gs.tiles);            // create player 3s hand - {R13 B13 G13}{G2 R2 O2} and 8 random tiles
 
         /* Player 1 draws a new tile */
         game.drawNewTile(p1, gs.tiles);                   // draw a new tile from the table (random)
@@ -749,18 +749,18 @@ public class AppTest extends TestCase {
 
         game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' marker from tiles previously used.
 
-        /* Player 3 plays a new meld {R13 G13 B13}{B2 R2 O2} */
+        /* Player 3 plays a new meld {R13 B13 G13}{G2 R2 O2} */
         assertTrue(p3.getHand().size() == 14);   // player 3s hand has 14 tiles
-        assertTrue(game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p3.processInputMelds("{R13,G13,B13}{B2,R2,O2}"))));  // Meld was played successfully (Initial 30 points)
+        assertTrue(game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p3.processInputMelds("{R13,B13,G13}{G2,R2,O2}"))));  // Meld was played successfully (Initial 30 points)
         assertTrue(p3.getHand().size() == 8);    // player 3 hand is updated
         assertTrue(gs.melds.size() == 3);        // melds are updated
         assertTrue(gs.tiles.size() == 61);       // unused tiles updated
 
         game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);   // clear '*' from tiles previously used.
 
-        /* Player 1 plays a new meld {R12,G12,O12} */
+        /* Player 1 plays a new meld {R12,B12,O12} */
         assertTrue(p1.getHand().size() == 15);   // player 1s hand has 15 tiles - {R12,G12,O12} and 12 random tiles (1 drawn from previous turn)
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{R12,G12,O12}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{R12,B12,O12}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 12);   // player 1 hand is updated
         assertTrue(gs.melds.size() == 4);        // melds are updated
         assertTrue(gs.tiles.size() == 61);       // unused tiles updated
@@ -784,63 +784,64 @@ public class AppTest extends TestCase {
         gs.players[2] = p3;
         gs.tiles = game.generateTiles(); // generate all tiles
 
-        // create player 1s hand - {B1,B2,O2,R3,G3,G3,R5,G6,O7,R9,R10,G11,G12,G13}
-        game.drawNewTile(p1, 1, "B", gs.tiles);
-        game.drawNewTile(p1, 2, "B", gs.tiles);
+        // create player 1s hand - {G1,G2,O2,R3,B3,B3,R5,B6,O7,R9,R10,B11,B12,B13}
+        game.drawNewTile(p1, 1, "G", gs.tiles);
+        game.drawNewTile(p1, 2, "G", gs.tiles);
         game.drawNewTile(p1, 2, "O", gs.tiles);
         game.drawNewTile(p1, 3, "R", gs.tiles);
-        game.drawNewTile(p1, 3, "G", gs.tiles);
-        game.drawNewTile(p1, 3, "G", gs.tiles);
+        game.drawNewTile(p1, 3, "B", gs.tiles);
+        game.drawNewTile(p1, 3, "B", gs.tiles);
         game.drawNewTile(p1, 5, "R", gs.tiles);
-        game.drawNewTile(p1, 6, "G", gs.tiles);
+        game.drawNewTile(p1, 6, "B", gs.tiles);
         game.drawNewTile(p1, 7, "O", gs.tiles);
         game.drawNewTile(p1, 9, "R", gs.tiles);
         game.drawNewTile(p1, 10, "R", gs.tiles);
-        game.drawNewTile(p1, 11, "G", gs.tiles);
-        game.drawNewTile(p1, 12, "G", gs.tiles);
-        game.drawNewTile(p1, 13, "G", gs.tiles);
+        game.drawNewTile(p1, 11, "B", gs.tiles);
+        game.drawNewTile(p1, 12, "B", gs.tiles);
+        game.drawNewTile(p1, 13, "B", gs.tiles);
 
-        // create player 2s hand - {R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}
+        //
+        // create player 2s hand - {R2,B2,G2,O2}{G3,G4,G5,G6,G7}{O4,O5,O6,O7,O8}
         game.drawNewTile(p2, 2, "R", gs.tiles);
-        game.drawNewTile(p2, 2, "G", gs.tiles);
         game.drawNewTile(p2, 2, "B", gs.tiles);
+        game.drawNewTile(p2, 2, "G", gs.tiles);
         game.drawNewTile(p2, 2, "O", gs.tiles);
-        game.drawNewTile(p2, 3, "B", gs.tiles);
-        game.drawNewTile(p2, 4, "B", gs.tiles);
-        game.drawNewTile(p2, 6, "B", gs.tiles);
-        game.drawNewTile(p2, 7, "B", gs.tiles);
+        game.drawNewTile(p2, 3, "G", gs.tiles);
+        game.drawNewTile(p2, 4, "G", gs.tiles);
+        game.drawNewTile(p2, 6, "G", gs.tiles);
+        game.drawNewTile(p2, 7, "G", gs.tiles);
         game.drawNewTile(p2, 4, "O", gs.tiles);
         game.drawNewTile(p2, 5, "O", gs.tiles);
         game.drawNewTile(p2, 6, "O", gs.tiles);
         game.drawNewTile(p2, 7, "O", gs.tiles);
         game.drawNewTile(p2, 8, "O", gs.tiles);
 
-        // create player 3s hand - R4 O6 G6 G7 R7 B8 {R10,R11,R12,R3} {G10,G11,G12,G13}
+        // create player 3s hand - R4 O6 B6 B7 R7 G8 {R10,R11,R12,R3} {B10,B11,B12,B13}
         game.drawNewTile(p3, 4, "R", gs.tiles);
         game.drawNewTile(p3, 6, "O", gs.tiles);
-        game.drawNewTile(p3, 6, "G", gs.tiles);
-        game.drawNewTile(p3, 7, "G", gs.tiles);
+        game.drawNewTile(p3, 6, "B", gs.tiles);
+        game.drawNewTile(p3, 7, "B", gs.tiles);
         game.drawNewTile(p3, 7, "R", gs.tiles);
-        game.drawNewTile(p3, 8, "B", gs.tiles);
+        game.drawNewTile(p3, 8, "G", gs.tiles);
         game.drawNewTile(p3, 10, "R", gs.tiles);
         game.drawNewTile(p3, 11, "R", gs.tiles);
         game.drawNewTile(p3, 12, "R", gs.tiles);
         game.drawNewTile(p3, 13, "R", gs.tiles);
-        game.drawNewTile(p3, 10, "G", gs.tiles);
-        game.drawNewTile(p3, 11, "G", gs.tiles);
-        game.drawNewTile(p3, 12, "G", gs.tiles);
-        game.drawNewTile(p3, 13, "G", gs.tiles);
+        game.drawNewTile(p3, 10, "B", gs.tiles);
+        game.drawNewTile(p3, 11, "B", gs.tiles);
+        game.drawNewTile(p3, 12, "B", gs.tiles);
+        game.drawNewTile(p3, 13, "B", gs.tiles);
 
         //P1 draws 2R
         game.drawNewTile(p1, 2, "R", gs.tiles);
-        //P2 chooses to draw and draws 5B
-        game.drawNewTile(p2, 5, "B", gs.tiles);
-        //P3 plays  {R10,R11,R12,R3} {G10,G11,G12,G13}
-        game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p3.processInputMelds("{R10,R11,R12,R13}{G10,G11,G12,G13}")));
-        //P1 plays {B2 O2 R2}{G11 G12 G13}
-        game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{B2,O2,R2}{G11,G12,G13}")));
-        //P2 plays and wins: {R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}
-        game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{R2,G2,B2,O2}{B3,B4,B5,B6,B7}{O4,O5,O6,O7,O8}")));
+        //P2 chooses to draw and draws 5G
+        game.drawNewTile(p2, 5, "G", gs.tiles);
+        //P3 plays  {R10,R11,R12,R3} {B10,B11,B12,B13}
+        game.playMelds(p3, gs.melds, game.convertMeldInputToTiles(p3.processInputMelds("{R10,R11,R12,R13}{B10,B11,B12,B13}")));
+        //P1 plays {G2 O2 R2}{B11 B12 B13}
+        game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p1.processInputMelds("{G2,O2,R2}{B11,B12,B13}")));
+        //P2 plays and wins: {R2,B2,G2,O2}{G3,G4,G5,G6,G7}{O4,O5,O6,O7,O8}
+        game.playMelds(p2, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{R2,B2,G2,O2}{G3,G4,G5,G6,G7}{O4,O5,O6,O7,O8}")));
 
         //check for winner
         assertTrue(game.checkForWinner(gs.players).getName().equals("P2"));
