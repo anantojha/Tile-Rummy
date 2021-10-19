@@ -150,7 +150,13 @@ public class Player implements Serializable {
             System.out.println("Select a RUNs / SETs from your hand. (Format: {01,02,03}{R1,B2,G3,O4} )");
             System.out.println("To reuse tiles from table, mark tiles on table with *. (Format: {01,02,*03} )");
             String[] userInputMelds = processInputMelds(myObj.next());
-            return userInputMelds;
+            ArrayList<ArrayList<Tile>> meldIn = game.convertMeldInputToTiles(userInputMelds);
+            if(game.validateMelds(meldIn)){
+                return userInputMelds;
+            }
+            System.out.println("Meld(s) not valid");
+            System.out.println("New Tile is added to your hand");
+            return null;
         }
     }
 

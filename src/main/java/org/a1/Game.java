@@ -1,7 +1,10 @@
 package org.a1;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Game implements Serializable {
 
@@ -136,14 +139,74 @@ public class Game implements Serializable {
             }
         }
 
-        if(counter >= 30)
-        {
-            return true;
+        return counter >= 30;
+    }
+
+    public Boolean setColors(String[] colors){
+        for (int i = 0; i < colors.length; i++) {
+            for (int j = 0; j < colors.length; j++) {
+                if (colors[i].equals(colors[j]) && i != j) {
+                    return false;
+                }
+            }
         }
-        else
-        {
-            return  false;
+        return true;
+    }
+
+    public Boolean runColors(String[] colors){
+        String first = colors[0];
+        for (String color : colors) {
+            if (!first.equals(color)) {
+                return false;
+            }
         }
+        return true;
+    }
+
+    public Boolean setNumbers(int[] numbers){
+        int first = numbers[0];
+        for (int number : numbers) {
+            if (first != number) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Boolean runNumbers(int[] numbers){
+        Arrays.sort(numbers);
+        for(int i = 1; i < numbers.length; i++){
+            if(numbers[i-1] + 1 != numbers[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    public boolean validateMelds(ArrayList<ArrayList<Tile>> melds) {
+        for(ArrayList<Tile> meld: melds){
+            if (meld.size() == 0){
+                return false;
+            }
+
+            String[] colors = new String[meld.size()];
+            int[] numbers = new int[meld.size()];
+            for(int i = 0; i < meld.size(); i++){
+                colors[i] = meld.get(i).getColour();
+                numbers[i] = meld.get(i).getNumber();
+            }
+
+            if(setColors(colors) && setNumbers(numbers)){
+                return true;
+            }
+
+            if(runColors(colors) && runNumbers(numbers)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public Boolean playMelds(Player player, ArrayList<ArrayList<Tile>> meld, ArrayList<ArrayList<Tile>> inMeld)
