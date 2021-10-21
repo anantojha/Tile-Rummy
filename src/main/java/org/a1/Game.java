@@ -1,10 +1,9 @@
 package org.a1;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.security.KeyPair;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game implements Serializable {
 
@@ -20,6 +19,10 @@ public class Game implements Serializable {
             addTiles( "G", tiles);
             addTiles( "O", tiles);
         }
+        Tile jokerOne = new Tile(0,"J");
+        Tile jokerTwo = new Tile(0,"J");
+        tiles.add(jokerOne);
+        tiles.add(jokerTwo);
         Collections.shuffle(tiles);
         return tiles;
     }
@@ -37,7 +40,7 @@ public class Game implements Serializable {
         players[0].setHand(new ArrayList<>(tiles.subList(0, 14)));
         players[1].setHand(new ArrayList<>(tiles.subList(14, 28)));
         players[2].setHand(new ArrayList<>(tiles.subList(28, 42)));
-        return new ArrayList<>(tiles.subList(42, 104));
+        return new ArrayList<>(tiles.subList(42, 106));
     }
 
     public Tile drawNewTile(Player p, int n, String c, ArrayList<Tile> tiles){
@@ -87,8 +90,16 @@ public class Game implements Serializable {
             {
                 if(v.contains("*"))
                 {
-                    Tile t = new Tile(Integer.parseInt(v.substring(2)), v.substring(1, 2));
-                    t.reuse = true;
+                    Tile t;
+                    if(v.contains("**")){
+                        t = new Tile(Integer.parseInt(v.substring(3)), v.substring(2, 3));
+                        t.reuse = true;
+                        t.setReuseIndex(1);
+                    } else {
+                        t = new Tile(Integer.parseInt(v.substring(2)), v.substring(1, 2));
+                        t.reuse = true;
+                        t.setReuseIndex(0);
+                    }
                     meld.add(t);
                 } else {
                     meld.add(new Tile(Integer.parseInt(v.substring(1)), v.substring(0, 1)));
@@ -100,8 +111,9 @@ public class Game implements Serializable {
         return melds;
     }
 
-    public Tile getTileFromTable(int n, String c, boolean remove, ArrayList<ArrayList<Tile>> melds)
+    public Tile getTileFromTable(int n, String c, int r, boolean remove, ArrayList<ArrayList<Tile>> melds)
     {
+        ArrayList<Pair> found = new ArrayList<>();
         for (int i = 0; i < melds.size(); i++)
         {
             for (int j = 0; j<melds.get(i).size(); j++)
@@ -110,17 +122,18 @@ public class Game implements Serializable {
                 {
                     if(melds.get(i).get(j).getColour().equals(c))
                     {
-                        if(remove){
-                            Tile temp = new Tile(n, c);
-                            melds.get(i).remove(j);
-                            return temp;
-                        }
-                        return new Tile(n, c);
+                        found.add(new Pair(i,j));
                     }
                 }
             }
         }
-        return null;
+        if(remove){
+            Tile temp = new Tile(n, c);
+            melds.get(found.get(r).getX()).remove(found.get(r).getY());
+            return temp;
+        } else {
+            return null;
+        }
     }
 
     public boolean initialMeldsAtLeastThirty(Player player, ArrayList<ArrayList<Tile>> melds)
@@ -135,11 +148,31 @@ public class Game implements Serializable {
         {
             for (Tile tile: meld)
             {
-                counter += tile.getNumber();
+                if (!tile.reuse) {
+                    counter += tile.getNumber();
+                }
             }
         }
 
         return counter >= 30;
+    }
+
+    public boolean checkPlayerHasTiles(ArrayList<Tile> hand, ArrayList<ArrayList<Tile>> melds){
+        Boolean found;
+        for (ArrayList<Tile> m : melds){
+            for(Tile t: m){
+                found = false;
+                for(Tile h: hand){
+                    if(t.getNumber() == h.getNumber() && t.getColour().equals(h.getColour())){
+                        found = true;
+                    }
+                }
+                if(!found){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public Boolean setColors(String[] colors){
@@ -183,37 +216,111 @@ public class Game implements Serializable {
         return true;
     }
 
+    public static boolean consecutive(int a, int b, int c) {
+        int min = Math.min(a, Math.min(b, c));
+        int max = Math.max(a, Math.max(b, c));
+        return max - min == 2 && a != b && a != c && b != c;
+    }
+
+    public ArrayList<Pair> lookForSplits(int[] numbers, int meldIndex){
+        ArrayList<Pair> splits = new ArrayList<>();
+        for(int i=0; i<numbers.length-1; i++){
+            int start = i;
+            int size = 1;
+            int end = start;
+            if(i<numbers.length-2){
+                end = start+1;
+                while(numbers[end] == numbers[end-1]+1){
+                    size++;
+                    end++;
+                    if(end >= numbers.length)
+                        break;
+                }
+            }
+            if(size >=3){
+                Pair p = new Pair(meldIndex,end-1);
+                p.setSize(size);
+                p.setStart(end-size);
+                p.setEnd(end-1);
+                splits.add(p);
+                i = end-1;
+            }
+        }
+        return splits;
+    }
+
+    public String[] getMeldColours(ArrayList<Tile> meld){
+        String[] colors = new String[meld.size()];
+        for(int i = 0; i < meld.size(); i++){
+            colors[i] = meld.get(i).getColour();
+        }
+        return colors;
+    }
+
+    public int[] getMeldNumbers(ArrayList<Tile> meld){
+        int[] numbers = new int[meld.size()];
+        for(int i = 0; i < meld.size(); i++){
+            numbers[i] = meld.get(i).getNumber();
+        }
+        return numbers;
+    }
+
 
     public boolean validateMelds(ArrayList<ArrayList<Tile>> melds) {
-        for(ArrayList<Tile> meld: melds){
-            if (meld.size() == 0){
+        Boolean isValid = false;
+        for(int j =0; j< melds.size(); j++){
+            if (melds.get(j).size() == 0){
                 return false;
             }
 
-            String[] colors = new String[meld.size()];
-            int[] numbers = new int[meld.size()];
-            for(int i = 0; i < meld.size(); i++){
-                colors[i] = meld.get(i).getColour();
-                numbers[i] = meld.get(i).getNumber();
-            }
+            String[] colors = getMeldColours(melds.get(j));
+            int[] numbers = getMeldNumbers(melds.get(j));
 
-            if(setColors(colors) && setNumbers(numbers)){
-                return true;
-            }
+            if(setColors(colors) && setNumbers(numbers) || runColors(colors) && runNumbers(numbers)) {
+                if (setColors(colors) && setNumbers(numbers)) {
+                    if (melds.get(j).size() == 3 || melds.get(j).size() == 4) {
+                        isValid = true;
+                    } else {
+                        isValid = false;
+                        break;
+                    }
+                }
 
-            if(runColors(colors) && runNumbers(numbers)){
-                return true;
+                if (runColors(colors) && runNumbers(numbers)) {
+                    if (melds.get(j).size() > 2) {
+                        isValid = true;
+                    } else {
+                        isValid = false;
+                        break;
+                    }
+                }
+            } else {
+                return false;
             }
         }
+        return isValid;
+    }
 
-        return false;
+    public Boolean validateReuse(){
+        return true;
     }
 
     public Boolean playMelds(Player player, ArrayList<ArrayList<Tile>> meld, ArrayList<ArrayList<Tile>> inMeld)
     {
-        if (!initialMeldsAtLeastThirty(player, inMeld))
+        if (!initialMeldsAtLeastThirty(player, inMeld) && checkPlayerHasTiles(player.getHand(), inMeld))
         {
             return false;
+        } else {
+            player.initialThirty = true;
+        }
+
+        ArrayList<ArrayList<Tile>> resetMeld = meld.stream().map(ArrayList::new).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Tile> resetHand = new ArrayList<>();
+        Iterator<Tile> it = player.hand.iterator();
+        while (it.hasNext()) {
+            Tile s = it.next();
+            Tile newS = new Tile(s.getNumber(), s.getColour());
+            resetHand.add(newS);
         }
 
         ArrayList<Tile> newHandOffset;
@@ -225,14 +332,22 @@ public class Game implements Serializable {
 
 
             for (Tile t: m) {
-                if (t.reuse != true) {
+                if (!t.reuse) {
                     Tile temp = player.getTileFromhand(t.getNumber(), t.getColour(), true);
-                    temp.setLastUsed(true);
-                    newHandOffset.add(temp);
+                    if (temp != null) {
+                        temp.setLastUsed(true);
+                        newHandOffset.add(temp);
+                    } else {
+                        return false;
+                    }
                 } else {
-                    Tile temp = getTileFromTable(t.getNumber(), t.getColour(), true, meld);
-                    temp.setReuse(true);
-                    newHandOffset.add(temp);
+                    Tile temp = getTileFromTable(t.getNumber(), t.getColour(), t.getReuseIndex(), true, resetMeld);
+                    if(temp != null){
+                            temp.setReuse(true);
+                            newHandOffset.add(temp);
+                    } else {
+                        return false;
+                    }
                 }
             }
 
@@ -241,14 +356,66 @@ public class Game implements Serializable {
 
         for (ArrayList<Tile> group: newMelds)
         {
-            meld.add(group);
+            resetMeld.add(group);
         }
 
-        meld.removeIf(ArrayList::isEmpty);
+        resetMeld.removeIf(ArrayList::isEmpty);
 
-        player.initialThirty = true;
+        if(validateMelds(resetMeld)) {
+            meld.clear();
+            meld.addAll(resetMeld);
+            for(ArrayList<Tile> m: meld){
+                for(Tile t: m){
+                    Tile n = new Tile(t.getNumber(), t.getColour());
+                    t = n;
+                }
+            }
+            return true;
+        } else {
+            ArrayList<Pair> splits = new ArrayList<>();
+            for(int j = 0; j < resetMeld.size(); j++) {
+                if (!(setColors(getMeldColours(resetMeld.get(j))) && setNumbers(getMeldNumbers(resetMeld.get(j))))) {
+                    if (runColors(getMeldColours(resetMeld.get(j)))) {
+                        splits.addAll(lookForSplits(getMeldNumbers(resetMeld.get(j)), j));
+                    }
+                }
+            }
+            ArrayList<ArrayList<Tile>> splitted = new ArrayList<>();
+            ArrayList<Tile> split;
+            for(int k = 0; k<splits.size()-1; k++){
+                split = new ArrayList<>();
+                for(int z = splits.get(k).getStart(); z< splits.get(k).getEnd()+1; z++){
+                    Tile t = new Tile(resetMeld.get(splits.get(k).getX()).get(z).getNumber(), resetMeld.get(splits.get(k).getX()).get(z).getColour());
+                    t.reuse = true;
+                    split.add(t);
+                }
+                splitted.add(split);
+            }
 
-        return true;
+            resetMeld.remove(splits.get(0).getX());
+            resetMeld.addAll(splitted);
+
+            if(validateMelds(resetMeld)){
+                meld.clear();
+                meld.addAll(resetMeld);
+                for(ArrayList<Tile> m: meld){
+                    for(Tile t: m){
+                        Tile n = new Tile(t.getNumber(), t.getColour());
+                        t = n;
+                    }
+                }
+                return true;
+            } else {
+                player.hand.clear();
+                it = resetHand.iterator();
+                while (it.hasNext()) {
+                    Tile s = it.next();
+                    Tile newS = new Tile(s.getNumber(), s.getColour());
+                    player.hand.add(newS);
+                }
+            }
+        }
+        return false;
     }
 
     public void printPlayerHands(Player[] players)
@@ -270,6 +437,7 @@ public class Game implements Serializable {
         ArrayList<Tile> sortedHandBlue = new ArrayList<>();
         ArrayList<Tile> sortedHandGreen = new ArrayList<>();
         ArrayList<Tile> sortedHandOrange = new ArrayList<>();
+        ArrayList<Tile> sortedHandJoker = new ArrayList<>();
 
         for (Tile t : tiles)
         {
@@ -285,9 +453,12 @@ public class Game implements Serializable {
             {
                 sortedHandGreen.add(t);
             }
-            else
+            else if(t.getColour().equals("O"))
             {
                 sortedHandOrange.add(t);
+            }
+            else {
+                sortedHandJoker.add(t);
             }
         }
 
@@ -301,6 +472,8 @@ public class Game implements Serializable {
         result.add(sortedHandGreen);
         sortedHandOrange.sort(Comparator.comparingInt(Tile::getNumber));
         result.add(sortedHandOrange);
+        sortedHandJoker.sort(Comparator.comparingInt(Tile::getNumber));
+        result.add(sortedHandJoker);
         return  result;
     }
 

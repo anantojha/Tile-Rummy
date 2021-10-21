@@ -9,9 +9,11 @@ public class Tile implements Serializable {
     private boolean lastUsed = false;
     private int points = 0;
     public boolean reuse = false;
+    private int reuseIndex = -1;
 
     public Tile(int number, String colour)
     {
+        super();
         this.number = number;
         this.colour = colour;
         if (number > 10)
@@ -43,4 +45,12 @@ public class Tile implements Serializable {
     public void setReuse(boolean b) { reuse = b; }
 
     public int getPoints() { return points; }
+
+    public int getReuseIndex() {
+        return reuseIndex;
+    }
+
+    public void setReuseIndex(int reuseIndex) {
+        this.reuseIndex = reuseIndex;
+    }
 }

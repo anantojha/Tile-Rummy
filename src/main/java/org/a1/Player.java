@@ -115,7 +115,12 @@ public class Player implements Serializable {
                     if (game.initialMeldsAtLeastThirty(this, meldIn)) {
                         clientConnection.sendAction(2);
                         clientConnection.sendMeld(meldIn);
-                        this.initialThirty = true;
+                        if(clientConnection.receiveAction() == 0) {
+                            this.initialThirty = true;
+                        } else {
+                            System.out.println("Invalid Meld input.");
+                            System.out.println("New Tile is added to your hand");
+                        }
                     } else {
                         System.out.println("Initial Melds did not equal at least 30");
                         System.out.println("New Tile is added to your hand");

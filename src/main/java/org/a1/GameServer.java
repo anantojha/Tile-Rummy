@@ -128,7 +128,12 @@ public class GameServer implements Serializable
                         // add meld (run or set) to table
                         //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
                         ArrayList<ArrayList<Tile>> inMelds = playerServer[0].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
-                        game.playMelds(players[0], melds, inMelds);
+                        if(game.playMelds(players[0], melds, inMelds)){
+                            playerServer[0].sendAction(0);
+                        } else {
+                            game.drawNewTile(players[0], tiles);
+                            playerServer[0].sendAction(1);
+                        }
                     }
                     playerServer[0].sendPlayers(players);
                     playerServer[0].sendMelds(melds);
@@ -164,7 +169,12 @@ public class GameServer implements Serializable
                         // add meld (run or set) to table
                         //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
                         ArrayList<ArrayList<Tile>> inMelds = playerServer[1].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
-                        game.playMelds(players[1], melds, inMelds);
+                        if(game.playMelds(players[1], melds, inMelds)){
+                            playerServer[1].sendAction(0);
+                        } else {
+                            playerServer[1].sendAction(1);
+                            game.drawNewTile(players[1], tiles);
+                        }
                     }
                     playerServer[1].sendPlayers(players);
                     playerServer[1].sendMelds(melds);
@@ -199,7 +209,12 @@ public class GameServer implements Serializable
                         // add meld (run or set) to table
                         //ArrayList<ArrayList<Tile>> receivedMelds = playerServer[i].receiveMeld();
                         ArrayList<ArrayList<Tile>> inMelds = playerServer[2].receiveMeld();//game.convertMeldInputToTiles(receivedMelds);
-                        game.playMelds(players[2], melds, inMelds);
+                        if(game.playMelds(players[2], melds, inMelds)){
+                            playerServer[2].sendAction(0);
+                        } else {
+                            playerServer[2].sendAction(1);
+                            game.drawNewTile(players[2], tiles);
+                        }
                     }
                     playerServer[2].sendPlayers(players);
                     playerServer[2].sendMelds(melds);
