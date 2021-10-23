@@ -26,6 +26,11 @@ public class PlayingRoundStepDefs extends TestCase {
         gs.tiles = game.generateTiles();
     }
 
+    @And("Player {int} first turn")
+    public void players_first_turn(int player){
+        gs.players[player-1].setInitial30Meld(false);
+    }
+
     @And("Player {int} hand is {string}")
     public void set_play_hands(int player, String hand){
         for(String s : hand.replaceAll("\\s", "").replaceAll("}","").replaceAll("\\{","").split(",")) {
@@ -36,6 +41,10 @@ public class PlayingRoundStepDefs extends TestCase {
 
     @When("Player {int} draws new tile")
     public void player_draws_new_tile(int player){
+        if(gs.players[player-1].getHand().size() == 0) {
+            game.drawNewTiles(gs.players[player-1], 11, gs.tiles);
+            game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);
+        }
         game.drawNewTile(gs.players[player-1], gs.tiles);
     }
 
@@ -45,23 +54,26 @@ public class PlayingRoundStepDefs extends TestCase {
         game.playMelds(gs.players[player-1], gs.melds, game.convertMeldInputToTiles(gs.players[player-1].processInputMelds(melds)));
     }
 
-    @Then("Player {int} hand and table is updated")
-    public void table_hand_updated(int player) throws InterruptedException {
+    @Then("Player {int} hand is updated")
+    public void player_hand_updated(int player) throws InterruptedException {
         Thread.sleep(100);
         game.printHand(gs.players[player-1]);
+    }
+
+    @And("Table is updated")
+    public void table_updated() throws InterruptedException {
+        Thread.sleep(100);
         game.printMelds(gs.melds);
         game.printRemainingTiles(gs.tiles);
     }
+
+
 
     @And("Joker is used as another tile")
     public void player_plays_joker(){
         for(ArrayList<Tile> m : gs.melds){
             for(Tile t : m){
-                if(t.getNumber() == 0 && t.getColour().equals("J")){
-                    for(int i = 0; i< t.getDesiredTiles().size(); i++) {
-                        System.out.println("Joker Represents: " + t.getDesiredTiles().get(i).getColour() + t.getDesiredTiles().get(i).getNumber());
-                    }
-                }
+                t.printDesiredTile();
             }
         }
     }
