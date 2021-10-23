@@ -1252,9 +1252,9 @@ public class AppTest extends TestCase {
 
         // Case 5
         // Player 1 plays: {O8,O9,O10} for their 2nd turn (O10 is reused from existing meld on table)
-        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{O8,O9,*O10}"))));  // Meld was played successfully
+        assertTrue(game.playMelds(p1, gs.melds, game.convertMeldInputToTiles(p2.processInputMelds("{*O7,O8,O9}"))));  // Meld was played successfully
         assertTrue(p1.getHand().size() == 8);    // player 1 hand is updated
-        assertTrue(gs.melds.size() == 5);        // melds are updated
+        assertTrue(gs.melds.size() == 4);        // melds are updated
 
         System.out.println("After Reuse:");
         game.printMelds(gs.melds);

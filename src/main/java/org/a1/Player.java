@@ -40,6 +40,9 @@ public class Player implements Serializable {
     public void connectToClient() {
         clientConnection = new Client();
     }
+    public void connectToClient(int port) {
+        clientConnection = new Client(port);
+    }
 
     public void initializePlayers() {
         for (int i = 0; i < 3; i++) {
@@ -58,6 +61,10 @@ public class Player implements Serializable {
     public void setWinner(Boolean isWinner)
     {
         winner = isWinner;
+    }
+
+    public void setInitial30Meld(Boolean completed){
+        this.initialThirty = completed;
     }
 
     public int getScore()
@@ -179,7 +186,12 @@ public class Player implements Serializable {
         return formattedMeld;
     }
 
-    private class Client {
+    public void PrintMsg(String msg) {
+        System.out.println(msg);
+
+    }
+
+    public class Client {
         Socket socket;
         private ObjectInputStream dIn;
         private ObjectOutputStream dOut;
@@ -187,6 +199,22 @@ public class Player implements Serializable {
         public Client() {
             try {
                 socket = new Socket("localhost", 9010);
+                dOut = new ObjectOutputStream(socket.getOutputStream());
+                dIn = new ObjectInputStream(socket.getInputStream());
+
+                playerId = dIn.readInt();
+
+                System.out.println("Connected as " + playerId);
+                sendPlayer();
+
+            } catch (IOException ex) {
+                System.out.println("Client failed to open");
+            }
+        }
+
+        public Client(int port) {
+            try {
+                socket = new Socket("localhost", port);
                 dOut = new ObjectOutputStream(socket.getOutputStream());
                 dIn = new ObjectInputStream(socket.getInputStream());
 

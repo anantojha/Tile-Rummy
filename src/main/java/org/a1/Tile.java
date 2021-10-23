@@ -1,8 +1,9 @@
 package org.a1;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Tile implements Serializable {
+public class Tile implements Serializable, Comparable<Tile> {
 
     private int number;
     private String colour;
@@ -10,6 +11,9 @@ public class Tile implements Serializable {
     private int points = 0;
     public boolean reuse = false;
     private int reuseIndex = -1;
+    private int rank = 0;
+    ArrayList<Tile> desiredTile;
+
 
     public Tile(int number, String colour)
     {
@@ -22,6 +26,25 @@ public class Tile implements Serializable {
         } else {
             points = number;
         }
+        if (colour.equals("R")) {
+            rank = 1;
+        } else if(colour.equals("B")) {
+            rank = 2;
+        } else if(colour.equals("G")) {
+            rank = 3;
+        } else if(colour.equals("O")) {
+            rank = 4;
+        }
+
+        desiredTile = new ArrayList<>();
+    }
+
+    public int getRank(){
+        return rank;
+    }
+
+    public void setRank(int r) {
+        rank = r;
     }
 
     public int getNumber() {
@@ -52,5 +75,18 @@ public class Tile implements Serializable {
 
     public void setReuseIndex(int reuseIndex) {
         this.reuseIndex = reuseIndex;
+    }
+
+    @Override
+    public int compareTo(Tile anotherInstance) {
+        return this.rank < anotherInstance.rank ? 0 : 1;
+    }
+
+    public ArrayList<Tile> getDesiredTiles() {
+        return desiredTile;
+    }
+
+    public void setDesiredTile(Tile t) {
+        this.desiredTile.add(t);
     }
 }

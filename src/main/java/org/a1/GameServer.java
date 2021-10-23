@@ -33,6 +33,7 @@ public class GameServer implements Serializable
         GameServer gs = new GameServer(false);
 
         gs.acceptConnections();
+        gs.startGame();
         gs.gameLoop();
         System.out.println("Game Over");
         System.exit(1);
@@ -55,6 +56,24 @@ public class GameServer implements Serializable
             } catch (IOException ex) {
                 System.out.println("Server Failed to open");
             }
+        }
+    }
+
+    public GameServer(boolean test, int port) {
+        if (!test){
+            System.out.println("Starting game server");
+        }
+        numPlayers = 0;
+        turnsMade = 0;
+        // initialize the players list with new players
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player(" ");
+        }
+
+        try {
+            ss = new ServerSocket(port);
+        } catch (IOException ex) {
+            System.out.println("Server Failed to open");
         }
     }
 
@@ -84,14 +103,16 @@ public class GameServer implements Serializable
             }
             System.out.println("Three players have joined the game");
 
-            // start the server threads
-            for (int i = 0; i < playerServer.length; i++) {
-                Thread t = new Thread(playerServer[i]);
-                t.start();
-            }
-            // start their threads
         } catch (IOException ex) {
             System.out.println("Could not connect 3 players");
+        }
+    }
+
+    public void startGame(){
+        // start the server threads
+        for (int i = 0; i < playerServer.length; i++) {
+            Thread t = new Thread(playerServer[i]);
+            t.start();
         }
     }
 
