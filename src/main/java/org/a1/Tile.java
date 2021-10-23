@@ -89,4 +89,10 @@ public class Tile implements Serializable, Comparable<Tile> {
     public void setDesiredTile(Tile t) {
         this.desiredTile.add(t);
     }
+
+    public void printDesiredTile(){
+        for(Tile t: desiredTile){
+            System.out.println("Joker Represents: " + t.getColour() + t.getNumber());
+        }
+    }
 }
