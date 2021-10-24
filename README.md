@@ -1,5 +1,5 @@
 # Tile-Rummy
-## COMP 4004 - Assignment 1
+## COMP 4004 - Assignment 2
 
 ##### **Name, Student #:**    *Anant Ojha*,  *101072523* 
 <br>
