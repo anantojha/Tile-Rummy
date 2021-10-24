@@ -1,7 +1,7 @@
 Feature: Starting a game
 
-  Scenario: Launching the server and joining the game
-    Given the server is running on port 9010
+  Scenario: Launching Game Server and Accepting Client Connections
+    Given Game Server is running on port 9010
     When I connect to the server on port 9010 with name "P1"
     Then Player 1 is connected to server
     When I connect to the server on port 9010 with name "P2"
