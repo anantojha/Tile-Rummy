@@ -142,16 +142,52 @@ public class Game implements Serializable {
             return true;
         }
 
+        int jokerCounter = 0;
         int counter = 0;
 
+        ArrayList<Tile> uniqueTiles = generateJokerReplacement();
+        ArrayList<Tile> found = new ArrayList<>();
+
         for (ArrayList<Tile> meld : melds) {
-            for (Tile tile : meld) {
-                if (!tile.reuse) {
-                    counter += tile.getPoints();
+            if(meldContainsJoker(meld)){
+                for (Tile tile : meld) {
+                    if (tile.getColour().equals("J") && tile.getNumber() == 0) {
+                        if(!tile.reuse){
+                            for(Tile t : uniqueTiles){
+                                if(validateJokerMeld(meld, t)){
+                                    found.add(t);
+                                }
+                            }
+                            if(found.size() == 1){
+                                if(found.get(0).getNumber() > 10){
+                                    counter += 10;
+                                } else {
+                                    counter += found.get(0).getNumber();
+                                }
+                            } else if (found.size() == 2){
+                                if(found.get(1).getNumber() > 10){
+                                    counter += 10;
+                                } else {
+                                    counter += found.get(1).getNumber();
+                                }
+                            } else {
+                                counter += 0;
+                            }
+                        }
+                    } else {
+                        if (!tile.reuse) {
+                            counter += tile.getPoints();
+                        }
+                    }
+                }
+            } else {
+                for (Tile tile : meld) {
+                    if (!tile.reuse) {
+                        counter += tile.getPoints();
+                    }
                 }
             }
         }
-
         return counter >= 30;
     }
 
