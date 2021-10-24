@@ -24,6 +24,7 @@ New Meld from Splitting Melds on Table
 4. Using Jokers <br>
 Using joker in a meld
    ![JokerMeld](src/Images/JokerMeld.png)
+If 2 of the same tiles are on the table, choose which to reuse by using 1 or 2 astrisks.
    ![Joker](src/Images/Joker.png)
 
 SAMPLE PLAY - (New Melds + Reuse Combined)
