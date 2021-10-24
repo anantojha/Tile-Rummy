@@ -19,7 +19,12 @@ Multiple Melds
 Adding Tile to Meld on Table
    ![AddingTileToExistingMeld](src/Images/AddingTileToExistingMeld.png)
 New Meld from Splitting Melds on Table
-   ![SplittingMelds](src/Images/SplittingMelds.png) 
+   ![SplittingMelds](src/Images/SplittingMelds.png)
+
+4. Using Jokers <br>
+Using joker in a meld
+   ![JokerMeld](src/Images/JokerMeld.png)
+   ![Joker](src/Images/Joker.png)
 
 SAMPLE PLAY - (New Melds + Reuse Combined)
 ![NewMeldReuseTiles](src/Images/NewMeldReuseTiles.png) 
