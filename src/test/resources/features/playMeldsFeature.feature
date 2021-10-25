@@ -9,7 +9,7 @@ Feature: Playing Melds
     Examples:
       |player |hand                                                       |move                 |
       |1      |"{R1,B1,G1,B4,G4,O4,R7,R8,R9,R10,R11,R12,R13,B13}"         |"{R1,B1,G1}"         |
-      |1      |"{R2,B2,G2,B4,G4,O4,R7,R8,R9,R10,R11,R12,R13,B13}"         |"{R2,B2,G12}"        |
+      |1      |"{R2,B2,G2,B4,G4,O4,R7,R8,R9,R10,R11,R12,R13,B13}"         |"{R2,B2,G2}"        |
       |1      |"{R3,B3,G3,B4,G4,O4,R7,R8,R9,R10,R11,R12,R13,B13}"         |"{R3,B3,G3}"         |
       |1      |"{R4,B4,G4,B4,G4,O4,R7,R8,R9,R10,R11,R12,R13,B13}"         |"{R4,B4,G4}"         |
       |1      |"{R5,B5,G5,B4,G4,O4,R7,R8,R9,R10,R11,R12,R13,B13}"         |"{R5,B5,G5}"         |

@@ -74,7 +74,7 @@ public class PlayingRoundStepDefs extends TestCase {
     @When("Player {int} plays {string}")
     public void player_plays_melds(int player, String melds){
         game.resetPreviouslyMovedTile(gs.players, gs.tiles, gs.melds);
-        game.playMelds(gs.players[player-1], gs.melds, game.convertMeldInputToTiles(gs.players[player-1].processInputMelds(melds)));
+        assertTrue(game.playMelds(gs.players[player-1], gs.melds, game.convertMeldInputToTiles(gs.players[player-1].processInputMelds(melds))));
     }
 
     /*
