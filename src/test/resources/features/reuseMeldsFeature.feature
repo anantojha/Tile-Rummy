@@ -69,8 +69,8 @@ Feature: Reusing Tiles From Table
     And Table is updated
     And Joker is used as another tile
     Examples:
-      |playerOne|playerTwo|playerOneHand                                    |playerTwohand                                   |playerOneMove     |playerTwoMove     |
-      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O3,O4,O5,R1,R2,R4,B1}"   |"{R1,B1,G1,O1}"   |"{*R1,R2,J0,R4}"     |
-      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O3,O5,R1,R2,B2,B8,B4}"   |"{R1,B1,G1,O1}"   |"{*B1,B2,J0,B4}"     |
-      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O3,O4,O5,R1,R2,B1,B2}"   |"{R1,B1,G1,O1}"   |"{*G1,G2,J0,G4}"     |
-      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O3,O4,O5,R1,R2,B1,B2}"   |"{R1,B1,G1,O1}"   |"{*O1,O2,J0,O4}"     |
+      |playerOne|playerTwo|playerOneHand                                    |playerTwohand                                   |playerOneMove     |playerTwoMove            |
+      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O3,O4,O5,R1,R2,R4,J0}"   |"{R1,B1,G1,O1}"   |"{*R1,R2,J0,R4}"         |
+      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O3,O5,R1,R2,B2,B4,J0}"   |"{R1,B1,G1,O1}"   |"{*B1,B2,J0,B4}"         |
+      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G2,G3,G4,G5,G6,O1,O2,O3,O4,O5,R1,R2,B1,J0}"   |"{R1,B1,G1,O1}"   |"{*G1,G2,J0,G4,G5,G6}"   |
+      |1        |2        |"{R1,R2,R3,R4,R5,B1,B2,B3,B4,B5,G1,G2,O1,O2}"    |"{G1,G2,G3,G4,G5,O1,O2,O4,O5,O6,R1,R2,B1,J0}"   |"{R1,B1,G1,O1}"   |"{*O1,O2,J0,O4}"         |
