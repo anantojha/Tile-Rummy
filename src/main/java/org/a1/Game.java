@@ -195,14 +195,16 @@ public class Game implements Serializable {
         Boolean found;
         for (ArrayList<Tile> m : melds) {
             for (Tile t : m) {
-                found = false;
-                for (Tile h : hand) {
-                    if (t.getNumber() == h.getNumber() && t.getColour().equals(h.getColour())) {
-                        found = true;
+                if(!t.reuse) {
+                    found = false;
+                    for (Tile h : hand) {
+                        if (t.getNumber() == h.getNumber() && t.getColour().equals(h.getColour())) {
+                            found = true;
+                        }
                     }
-                }
-                if (!found) {
-                    return false;
+                    if (!found) {
+                        return false;
+                    }
                 }
             }
         }
