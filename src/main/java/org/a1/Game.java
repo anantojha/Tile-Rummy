@@ -349,7 +349,7 @@ public class Game implements Serializable {
     }
 
     public Boolean playMelds(Player player, ArrayList<ArrayList<Tile>> meld, ArrayList<ArrayList<Tile>> inMeld) {
-        if (!initialMeldsAtLeastThirty(player, inMeld) && checkPlayerHasTiles(player.getHand(), inMeld)) {
+        if (!(initialMeldsAtLeastThirty(player, inMeld) && checkPlayerHasTiles(player.getHand(), inMeld))) {
             return false;
         } else {
             player.initialThirty = true;
