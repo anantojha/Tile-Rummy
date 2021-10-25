@@ -160,8 +160,14 @@ public class Player implements Serializable {
             return null;
         } else {
             System.out.println("Select a RUNs / SETs from your hand. (Format: {01,02,03}{R1,B2,G3,O4} )");
-            System.out.println("To reuse tiles from table, mark tiles on table with *. (Format: {01,02,*03} )");
+            System.out.println("To reuse tiles from table, mark tiles on table with *. (Format: {01,02,*03}{O6,O7,**O8} )");
+            System.out.println("Two of the same tiles on the table, Single *: Reuse 1st one | Double **: Reuse 2nd one) ");
             String[] userInputMelds = processInputMelds(myObj.next());
+            if(userInputMelds[0].isEmpty()){
+                System.out.println("Meld(s) is Empty");
+                System.out.println("New Tile is added to your hand");
+                return null;
+            }
             ArrayList<ArrayList<Tile>> meldIn = game.convertMeldInputToTiles(userInputMelds);
             if(game.validateMelds(meldIn)){
                 return userInputMelds;
