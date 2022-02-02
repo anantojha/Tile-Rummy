@@ -1,9 +1,10 @@
 # Tile-Rummy
 ## COMP 4004 - Software Quality Assurance 
 
-##### **Name #:**    *Anant Ojha*
+##### **Name:**    *Anant Ojha*
 
 Simple game of Rummikub using a textual User Interface.  Developed using TDD principles. 
+<br>
 <br>
 GamePlay Instructions:
 
