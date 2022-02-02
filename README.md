@@ -5,7 +5,8 @@
 Includes Cucumber & Junit (Paramaterized / Non-Paramaterized) Test Suites
 <br>
 <br>
-GamePlay Instructions:
+<br>
+-> GamePlay Instructions
 
 
 1. Drawing a new Tile <br>
